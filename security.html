@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SAFE-NET AI - Security" />
+  <title>Security - SAFE-NET</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { padding-top: 80px; background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+    .hero-section { padding: 120px 20px; text-align: center; background: linear-gradient(180deg, rgba(0, 212, 255, 0.05) 0%, transparent 100%); }
+    .hero-title { font-size: 3rem; margin-bottom: 20px; color: #fff; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+    .content-section { max-width: 800px; margin: 0 auto; padding: 40px 20px; line-height: 1.8; font-size: 1.1rem; }
+    .content-section h2 { color: #00d4ff; margin-top: 40px; margin-bottom: 20px; font-size: 1.8rem; }
+    .content-section p { margin-bottom: 20px; color: rgba(255,255,255,0.8); }
+    .security-badge { text-align: center; padding: 30px; border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 12px; margin-top: 40px; background: rgba(0, 212, 255, 0.05); }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0;">
+        <div class="logo">
+          <span class="logo-icon">
+            <svg class="dynamic-shield" viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="navShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00d4ff" /><stop offset="100%" stop-color="#a855f7" /></linearGradient></defs>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="url(#navShieldGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span class="logo-text" style="font-weight: bold; font-size: 1.5rem; color: #fff; margin-left: 10px;"><span class="safe-part" style="color:#00d4ff">Safe</span><span class="net-part">Net</span></span>
+        </div>
+        <div class="nav-links" style="display: flex; gap: 20px;">
+          <a href="index.html" class="nav-link" style="color: #fff; text-decoration: none;">Home</a>
+          <a href="about.html" class="nav-link" style="color: #fff; text-decoration: none;">About</a>
+          <a href="pricing.html" class="nav-link" style="color: #fff; text-decoration: none;">Pricing</a>
+          <a href="documentation.html" class="nav-link" style="color: #fff; text-decoration: none;">Documentation</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero-section">
+      <div class="container">
+        <h1 class="hero-title">Security Center</h1>
+        <p style="font-size: 1.25rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">Our Zero Trust Architecture and internal resilience protocols.</p>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <h2>Zero Trust Architecture Axioms</h2>
+      <p>SAFENET adheres to three core axioms in all internal infrastructure and client deployments:</p>
+      <ol style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">
+        <li style="margin-bottom: 10px;"><strong>Never Trust, Always Verify:</strong> Every byte of input is treated as a potential carrier for a payload or algorithmic manipulation.</li>
+        <li style="margin-bottom: 10px;"><strong>Least Privilege Access:</strong> Information is processed in isolated silos before being aggregated by the scoring systems.</li>
+        <li style="margin-bottom: 10px;"><strong>Assume Breach:</strong> The system actively scans for indicator patterns of compromise within seemingly "legitimate" communication channels.</li>
+      </ol>
+      
+      <h2>System Resilience & Performance</h2>
+      <p>Our infrastructure deploys advanced mitigation to ensure uninterrupted threat detection:</p>
+      <ul style="color: rgba(255,255,255,0.8);">
+        <li style="margin-bottom: 10px;"><strong>Scan Deduplication:</strong> Hash-based LRU Cache for redundant payload analysis.</li>
+        <li style="margin-bottom: 10px;"><strong>Parallel Forensics:</strong> Async subprocess execution for internal engines simultaneously testing domains in FFT and ELA.</li>
+        <li style="margin-bottom: 10px;"><strong>Circuit Breakers:</strong> Built-in safeguards that maintain client-side protection even if ML Enrichment APIs disconnect.</li>
+      </ul>
+
+      <div class="security-badge">
+        <h3 style="color: #00ff88; margin-bottom: 10px;">SOC-2 Type II Certified</h3>
+        <p style="margin: 0;">Our infrastructure undergoes relentless penetration testing by tier-1 Red Teams.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: rgba(10, 15, 30, 0.95); padding: 40px 0 20px 0; border-top: 1px solid rgba(0,212,255,0.2);">
+    <div class="container" style="text-align: center; color: rgba(255,255,255,0.5); font-size: 0.9rem;">
+      <p>&copy; 2026 SAFE-NET. All rights reserved. | Professional Cybersecurity Solutions</p>
+    </div>
+  </footer>
+</body>
+</html>

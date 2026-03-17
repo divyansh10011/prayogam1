@@ -1,0 +1,3886 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://cdn.tesseract.project; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://*; connect-src 'self' http://localhost:3000 http://127.0.0.1:3000 https://*.firebaseio.com https://*.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';">
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=()" />
+  <meta name="description" content="SAFE-NET AI - Advanced Phishing Detection & Cyber Fraud Prevention System " />
+  <meta name="keywords"
+    content="phishing detection, cyber fraud detection, cybersecurity, email security, fraud prevention" />
+  <title>SAFE-NET - Intelligent Phishing & Cyber Fraud Detection</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+      overflow: auto;
+    }
+
+    body {
+      overflow-y: auto;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="%2300d4ff" opacity="0.8"/><circle cx="12" cy="12" r="8" fill="none" stroke="%2300d4ff" stroke-width="1" opacity="0.5"/><path d="M12 2 L12 8 M12 16 L12 22 M2 12 L8 12 M16 12 L22 12" stroke="%2300d4ff" stroke-width="1.5" opacity="0.6"/></svg>') 12 12, auto;
+    }
+
+    /* Custom cursor for interactive elements */
+    button:hover,
+    a:hover,
+    [role="button"]:hover,
+    .btn:hover,
+    input[type="button"]:hover {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0 L8 6 L3 10 L12 20 L14 18 L5 8 L9 3 Z" fill="%2300ff88" opacity="0.9"/><circle cx="6" cy="8" r="4" fill="none" stroke="%2300ff88" stroke-width="0.5" opacity="0.4"/></svg>') 8 8, pointer;
+    }
+
+    section {
+      display: block;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in forwards;
+      position: relative;
+      overflow: visible;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+      }
+
+      50% {
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes scanline {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(100%);
+      }
+    }
+
+    @keyframes neon-flicker {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes flip {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      100% {
+        transform: rotateY(360deg);
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes rainbow {
+
+      0%,
+      100% {
+        filter: hue-rotate(0deg);
+      }
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 15, 35, 0.98);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+
+    body {
+      padding-top: 70px;
+    }
+
+    .nav-link {
+      transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1), transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00d4ff, #0099cc);
+      transition: width 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-link:hover {
+      color: #00d4ff;
+      transform: translateY(-3px);
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+
+    section {
+      scroll-margin-top: 70px;
+    }
+
+    .stat-card {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94), background 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 212, 255, 0.12);
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .about-card {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      transform-origin: center;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.12), transparent);
+      transition: left 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .about-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0, 212, 255, 0.12) !important;
+    }
+
+    .about-card:hover::before {
+      left: 100%;
+    }
+
+    .feature-icon {
+      display: inline-block;
+      transition: all 0.3s ease;
+      font-size: 24px;
+    }
+
+    .feature-item:hover .feature-icon {
+      animation: flip 0.6s ease-in-out;
+      color: #00d4ff;
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
+    }
+
+    .sample-btn {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .sample-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 212, 255, 0.3);
+      transition: left 0.4s ease;
+      z-index: 0;
+    }
+
+    .sample-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .sample-btn:active::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .sample-btn:hover::before {
+      left: 100%;
+    }
+
+    .sample-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.18);
+      border: 1px solid rgba(0, 212, 255, 0.4);
+    }
+
+    .scenario-card {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow;
+      /* default floating animation for mobile or small screens */
+      animation: scenarioFloat 4s ease-in-out infinite;
+      backface-visibility: hidden;
+    }
+
+    .scenario-card:nth-child(even) {
+      animation-delay: 1s;
+    }
+
+    .scenario-card:nth-child(3n) {
+      animation-delay: 2s;
+    }
+
+    @keyframes scenarioFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .scenario-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .scenario-card:hover {
+      transform: translateY(-10px) !important;
+      box-shadow: 0 16px 35px rgba(0, 212, 255, 0.18) !important;
+      animation-play-state: paused;
+    }
+
+    /* Scenario Modal Styles */
+    .scenario-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 18, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .scenario-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scenario-modal-content {
+      background: linear-gradient(135deg, rgba(10, 15, 30, 0.95), rgba(6, 9, 20, 0.98));
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.4s ease;
+      position: relative;
+    }
+
+    .scenario-modal-overlay.active .scenario-modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: #00d4ff;
+      font-size: 28px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .close-modal:hover {
+      transform: scale(1.2);
+    }
+
+    #scenarioModalBody .scenario-card {
+      position: relative !important;
+      transform: none !important;
+      animation: none !important;
+      width: 100% !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+    }
+
+    #scenarioModalBody .scenario-card::before {
+      display: none;
+    }
+
+    #scenarioModalBody .scenario-card:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      filter: none !important;
+    }
+
+    /* Impressive 3D Backwards Circular Carousel on larger screens */
+    @media (min-width: 1024px) {
+      .scenarios {
+        perspective: 1200px;
+        overflow: hidden;
+      }
+
+      .scenarios-grid {
+        position: relative;
+        width: 340px;
+        height: 600px;
+        margin: 80px auto;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        display: block !important;
+        transform-style: preserve-3d;
+        animation: spinCarousel 35s linear infinite;
+      }
+
+      .scenarios-grid:hover,
+      .scenarios-grid:hover .scenario-card,
+      .scenarios-grid:has(.expanded) {
+        animation-play-state: paused !important;
+      }
+
+      @keyframes spinCarousel {
+        from {
+          transform: rotateY(0deg);
+        }
+
+        to {
+          transform: rotateY(-360deg);
+        }
+      }
+
+      @keyframes floatCardMargin {
+        0% {
+          margin-top: -15px !important;
+        }
+
+        100% {
+          margin-top: 15px !important;
+        }
+      }
+
+      .scenario-card {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 340px !important;
+        margin: 0 !important;
+        transform-origin: center center;
+        /* Using margin for floating so we don't overwrite the 3D transforms */
+        animation: floatCardMargin 4s ease-in-out infinite alternate !important;
+      }
+
+      .scenario-card:nth-child(1) {
+        transform: rotateY(0deg) translateZ(450px) !important;
+        animation-delay: 0s !important;
+      }
+
+      .scenario-card:nth-child(2) {
+        transform: rotateY(60deg) translateZ(450px) !important;
+        animation-delay: -0.8s !important;
+      }
+
+      .scenario-card:nth-child(3) {
+        transform: rotateY(120deg) translateZ(450px) !important;
+        animation-delay: -1.6s !important;
+      }
+
+      .scenario-card:nth-child(4) {
+        transform: rotateY(180deg) translateZ(450px) !important;
+        animation-delay: -2.4s !important;
+      }
+
+      .scenario-card:nth-child(5) {
+        transform: rotateY(240deg) translateZ(450px) !important;
+        animation-delay: -3.2s !important;
+      }
+
+      .scenario-card:nth-child(6) {
+        transform: rotateY(300deg) translateZ(450px) !important;
+        animation-delay: -4s !important;
+      }
+
+      .scenario-card:hover {
+        filter: brightness(1.2) drop-shadow(0 0 30px rgba(0, 212, 255, 0.4)) !important;
+        border-color: rgba(0, 212, 255, 0.8) !important;
+        z-index: 10;
+      }
+    }
+
+    .scenario-card:hover::before {
+      opacity: 1;
+      right: 0;
+      top: 0;
+    }
+
+    .scenario-indicators {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .indicator {
+      animation: slideIn 0.5s ease-out;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 8px rgba(255, 0, 85, 0.6));
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .primary-button,
+    .secondary-button {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow;
+    }
+
+    .primary-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+      z-index: 0;
+    }
+
+    .primary-button:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .primary-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.25);
+    }
+
+    .primary-button:active {
+      transform: translateY(-2px);
+    }
+
+    .cta-button {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      position: relative;
+      will-change: transform;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.25);
+    }
+
+    .cta-button:active {
+      transform: scale(0.98);
+    }
+
+    /* Advanced Get Started button */
+    #getStarted {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 153, 204, 0.1));
+      border: 1.5px solid rgba(0, 212, 255, 0.4);
+      color: #00d4ff;
+      padding: 8px 16px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      border-radius: 6px;
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      font-size: 12px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    #getStarted::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+      z-index: 1;
+    }
+
+    #getStarted:hover::before {
+      left: 100%;
+    }
+
+    #getStarted::after {
+      content: '▶';
+      margin-left: 8px;
+      display: inline-block;
+      transition: transform 0.3s ease;
+      font-size: 10px;
+    }
+
+    #getStarted:hover::after {
+      transform: translateX(4px);
+    }
+
+    #getStarted:hover {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.18), rgba(0, 153, 204, 0.12));
+      border-color: rgba(0, 212, 255, 0.6);
+      box-shadow: 0 4px 16px rgba(0, 212, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    /* Enhanced Hero Get Started Zone */
+    .hero-buttons #getStarted {
+      font-size: 14px;
+      padding: 14px 34px;
+      letter-spacing: 1.5px;
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.2);
+      animation: heroPulse 2.5s infinite;
+    }
+
+    @keyframes heroPulse {
+      0% {
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.2);
+        transform: scale(1);
+      }
+
+      50% {
+        box-shadow: 0 0 35px rgba(0, 212, 255, 0.7), inset 0 0 15px rgba(0, 212, 255, 0.4);
+        transform: scale(1.03);
+        filter: brightness(1.2);
+      }
+
+      100% {
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.2);
+        transform: scale(1);
+      }
+    }
+
+    .hero-buttons #getStarted:hover {
+      animation-play-state: paused;
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 0 40px rgba(0, 212, 255, 0.8), inset 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+
+    .hero-buttons .secondary-button {
+      position: relative;
+      overflow: hidden;
+      font-size: 14px;
+      padding: 14px 34px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
+    }
+
+    .hero-buttons .secondary-button:hover {
+      background: rgba(168, 85, 247, 0.1);
+      border-color: rgba(168, 85, 247, 0.6);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+    }
+
+    /* Animated glow orb next to nav actions */
+    .nav-actions {
+      position: relative;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .submit-button {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .submit-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
+    }
+
+    .submit-button:hover::before {
+      left: 100%;
+    }
+
+    .submit-button:active {
+      transform: translateY(-1px);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      transition: border-color 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform, box-shadow;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+    }
+
+    .form-group input:hover,
+    .form-group textarea:hover {
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    .form-message {
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .detection-demo-output {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in forwards;
+    }
+
+    .particle {
+      position: fixed;
+      pointer-events: none;
+    }
+
+    .hero {
+      perspective: 1000px;
+    }
+
+    .hero-content {
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-title {
+      letter-spacing: -0.01em;
+      /* clean modern heading, no flicker */
+    }
+
+    .gradient-text {
+      background: linear-gradient(45deg, #00d4ff, #0099cc, #00d4ff);
+      background-size: 300% 300%;
+      animation: gradient-shift 3s ease infinite;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    @keyframes gradient-shift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .section-title {
+      animation: titleAnimation 0.8s ease-out;
+    }
+
+    @keyframes titleAnimation {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .contact-form {
+      animation: formAnimation 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes formAnimation {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .info-card {
+      transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow;
+    }
+
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 28px rgba(0, 212, 255, 0.12) !important;
+    }
+
+    .info-card:hover::before {
+      left: 100%;
+    }
+
+    .info-icon {
+      display: inline-block;
+      font-size: 32px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .info-card:hover .info-icon {
+      animation: bounce 0.6s ease-in-out;
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 15px;
+      background: rgba(0, 212, 255, 0.95);
+      color: white;
+      border-radius: 8px;
+      white-space: nowrap;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+    }
+
+    .tooltip:hover::after {
+      opacity: 1;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #00d4ff;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .threat-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(0, 212, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .threat-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00d4ff, #0099cc);
+      border-radius: 10px;
+      animation: expandWidth 1s ease-out forwards;
+    }
+
+    @keyframes expandWidth {
+      from {
+        width: 0;
+      }
+
+      to {
+        width: 100%;
+      }
+    }
+
+    .scan-effect {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scan-effect::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+      animation: scanline 2s linear infinite;
+      pointer-events: none;
+    }
+
+    .cyber-grid {
+      animation: none;
+      display: none;
+      /* Hide cyber grid element */
+    }
+
+    .text-primary {
+      color: var(--accent-cyan, #00d4ff);
+      /* static accent, no rainbow */
+    }
+
+    /* Cyber ambient: continuous motion, glitch, shake */
+    @keyframes microShake {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(0.01deg);
+      }
+
+      100% {
+        transform: translate3d(0, 0, 0) rotate(0.01deg);
+      }
+    }
+
+    @keyframes subtleGlitch {
+      0% {
+        text-shadow: 0 0 6px rgba(0, 212, 255, 0.06);
+        transform: translateX(0);
+      }
+
+      100% {
+        text-shadow: 0 0 6px rgba(0, 212, 255, 0.06);
+        transform: translateX(0);
+      }
+    }
+
+    .cyber-grid {
+      animation: none;
+      /* ambient shake disabled */
+    }
+
+    .hero-title {
+      animation: neon-flicker 3s infinite;
+      /* glitch shake removed */
+    }
+
+    /* Impact class — subtle focus state */
+    .impact .hero,
+    .impact .nav-content,
+    .impact .modal-panel {
+      transition: filter 0.3s ease;
+    }
+
+    /* Scan overlay disabled — modern AI design */
+    #scanLayer {
+      display: none;
+    }
+
+    /* Glowing edges for realism */
+    .glow-edge {
+      box-shadow: 0 6px 40px rgba(0, 212, 255, 0.06), inset 0 0 30px rgba(0, 212, 255, 0.02);
+    }
+
+    /* Page loader screen - Ultra Advanced */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: linear-gradient(135deg, #0a0f23 0%, #081824 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.8s cubic-bezier(.2, .9, .2, 1), visibility 0.8s ease;
+      overflow: hidden;
+    }
+
+    #pageLoader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Advanced particle effect */
+    .loader-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    .particle-small {
+      width: 2px;
+      height: 2px;
+      background: rgba(0, 212, 255, 0.3);
+    }
+
+    .particle-medium {
+      width: 4px;
+      height: 4px;
+      background: rgba(0, 212, 255, 0.5);
+    }
+
+    .particle-large {
+      width: 6px;
+      height: 6px;
+      background: rgba(0, 212, 255, 0.7);
+    }
+
+    .loader-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      background: radial-gradient(circle at center, rgba(0, 212, 255, 0.08), transparent 70%);
+      padding: 60px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(0, 212, 255, 0.15);
+      min-width: 340px;
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: borderGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes borderGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      50% {
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    /* Loader text — clean modern glow, no harsh glitch */
+    @keyframes glitch-text {
+
+      0%,
+      100% {
+        text-shadow: 0 0 12px rgba(0, 212, 255, 0.35);
+      }
+
+      50% {
+        text-shadow: 0 0 18px rgba(0, 212, 255, 0.55);
+      }
+    }
+
+    @keyframes scan-line-move {
+      0% {
+        transform: translateY(-100%);
+      }
+
+      100% {
+        transform: translateY(100%);
+      }
+    }
+
+    @keyframes cyber-pulse {
+
+      0%,
+      100% {
+        opacity: 0.75;
+        filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.25));
+      }
+
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.45));
+      }
+    }
+
+    @keyframes data-stream {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(10px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes bounce-in {
+      0% {
+        transform: scale(0.3) translateY(30px);
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes rotate-orbit {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes matrix-rain {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+    }
+
+    .loader-logo {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: cyber-pulse 0.8s ease-in-out infinite, bounce-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 0 16px rgba(0, 212, 255, 0.6));
+      position: relative;
+    }
+
+    .loader-logo::before {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 2px solid rgba(0, 212, 255, 0.2);
+      border-radius: 50%;
+      animation: rotate-orbit 4s linear infinite;
+    }
+
+    .loader-text {
+      color: #00d4ff;
+      font-size: 28px;
+      letter-spacing: 4px;
+      font-weight: 900;
+      text-transform: uppercase;
+      animation: glitch-text 3s ease-in-out infinite, slideUp 0.8s ease-out 0.2s both;
+      margin-bottom: 12px;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    }
+
+    .loader-status {
+      color: #6db3d8;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+      animation: data-stream 1.5s ease-in-out infinite, slideUp 0.8s ease-out 0.3s both;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .scan-container {
+      position: relative;
+      height: 160px;
+      margin: 24px 0;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.03));
+      border: 1.5px solid rgba(0, 212, 255, 0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      animation: slideUp 0.8s ease-out 0.4s both;
+      box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.05);
+    }
+
+    .scan-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+      animation: scan-line-move 1.8s ease-in-out infinite;
+      box-shadow: 0 0 12px #00d4ff, 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+
+    .threat-items {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 0.6s ease-out 0.6s forwards;
+    }
+
+    .threat-item {
+      text-align: center;
+      flex: 1;
+      padding: 0 12px;
+      animation: bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation-fill-mode: both;
+    }
+
+    .threat-item:nth-child(1) {
+      animation-delay: 0.7s;
+    }
+
+    .threat-item:nth-child(2) {
+      animation-delay: 0.8s;
+    }
+
+    .threat-item:nth-child(3) {
+      animation-delay: 0.9s;
+    }
+
+    .threat-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+      animation: cyber-pulse 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+      transition: transform 0.3s ease;
+    }
+
+    .threat-label {
+      font-size: 11px;
+      color: #8cc9e0;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.95;
+      font-weight: 600;
+    }
+
+    .progress-wrapper {
+      margin: 24px 0;
+      animation: slideUp 0.8s ease-out 0.5s both;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #6db3d8;
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .loader-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(0, 212, 255, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.05);
+    }
+
+    .loader-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #00d4ff, #0099cc, #00ff88, #0099cc);
+      animation: loadProgress 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+      width: 40%;
+      box-shadow: 0 0 12px #00d4ff, inset 0 0 8px rgba(0, 255, 136, 0.3);
+      border-radius: 12px;
+    }
+
+    @keyframes loadProgress {
+      0% {
+        width: 8%;
+      }
+
+      25% {
+        width: 35%;
+      }
+
+      50% {
+        width: 65%;
+      }
+
+      75% {
+        width: 85%;
+      }
+
+      100% {
+        width: 95%;
+      }
+    }
+
+    .loader-footer {
+      font-size: 12px;
+      color: #4a8fa3;
+      letter-spacing: 1px;
+      margin-top: 20px;
+      animation: slideUp 0.8s ease-out 0.7s both;
+      font-weight: 500;
+    }
+
+    .footer-item {
+      display: inline-block;
+      margin: 0 8px;
+    }
+
+    .footer-item::before {
+      content: '◆ ';
+      color: #00d4ff;
+      margin-right: 4px;
+    }
+
+    .footer-item.active {
+      color: #00d4ff;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+    }
+
+    /* Background scan effect for loader */
+    .loader-bg-scan {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0.3;
+    }
+
+    .scan-bg-line {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+      animation: scan-line-move 4s linear infinite;
+      box-shadow: 0 0 8px rgba(0, 212, 255, 0.1);
+    }
+
+    /* Sample tooltip */
+    #sampleTooltip {
+      position: fixed;
+      z-index: 3000;
+      pointer-events: none;
+      background: rgba(4, 12, 18, 0.96);
+      color: #cdefff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.06);
+      transform: translate(-50%, -120%);
+      opacity: 0;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+      white-space: nowrap;
+    }
+
+    #sampleTooltip.visible {
+      opacity: 1;
+      transform: translate(-50%, -140%);
+    }
+
+    /* Ultra transitions: page mask reveal */
+    #pageMask {
+      position: fixed;
+      inset: 0;
+      z-index: 2500;
+      pointer-events: none;
+      display: block;
+    }
+
+    #pageMask .maskCircle {
+      position: absolute;
+      left: var(--mx, 50%);
+      top: var(--my, 50%);
+      width: 40vmax;
+      height: 40vmax;
+      transform: translate(-50%, -50%) scale(0);
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(0, 212, 255, 0.12), rgba(0, 80, 100, 0.06) 30%, rgba(0, 0, 0, 0.0) 60%);
+      transition: transform 0.5s cubic-bezier(.2, .9, .2, 1), opacity 0.35s;
+      opacity: 0;
+      will-change: transform, opacity;
+      mix-blend-mode: screen;
+    }
+
+    #pageMask.revealing .maskCircle {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    /* Page transition overlay */
+    #pageTransition {
+      position: fixed;
+      inset: 0;
+      z-index: 2400;
+      background: linear-gradient(135deg, #0a0f23 0%, #081824 100%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(.25, .46, .45, .94), visibility 0.4s ease;
+    }
+
+    #pageTransition.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* Threat Info Popup Styles */
+    #threatInfoPopup {
+      position: fixed;
+      z-index: 5000;
+      background: linear-gradient(135deg, rgba(6, 10, 18, 0.98), rgba(8, 14, 24, 0.97));
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 500px;
+      min-width: 400px;
+      backdrop-filter: blur(12px) saturate(150%);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 212, 255, 0.15);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+    #threatInfoPopup.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    #threatInfoPopup .popup-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    #threatInfoPopup .popup-icon {
+      font-size: 48px;
+      filter: drop-shadow(0 4px 12px rgba(0, 212, 255, 0.4));
+      animation: cyber-pulse 2s ease-in-out infinite;
+    }
+
+    #threatInfoPopup .popup-title-section {
+      flex: 1;
+    }
+
+    #threatInfoPopup .popup-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #00d4ff;
+      margin: 0 0 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    }
+
+    #threatInfoPopup .popup-risk-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    #threatInfoPopup .popup-risk-badge.critical {
+      background: rgba(255, 0, 85, 0.15);
+      color: #ff0055;
+      border: 1px solid rgba(255, 0, 85, 0.4);
+    }
+
+    #threatInfoPopup .popup-risk-badge.high {
+      background: rgba(255, 153, 0, 0.15);
+      color: #ff9900;
+      border: 1px solid rgba(255, 153, 0, 0.4);
+    }
+
+    #threatInfoPopup .popup-risk-badge.safe {
+      background: rgba(0, 212, 255, 0.15);
+      color: #00d4ff;
+      border: 1px solid rgba(0, 212, 255, 0.4);
+    }
+
+    #threatInfoPopup .popup-confidence {
+      font-size: 12px;
+      color: #8cc9e0;
+      margin-left: 8px;
+    }
+
+    #threatInfoPopup .popup-description {
+      color: #cdefff;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 16px;
+      background: rgba(0, 212, 255, 0.05);
+      border-left: 3px solid rgba(0, 212, 255, 0.4);
+      border-radius: 6px;
+    }
+
+    #threatInfoPopup .popup-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #00d4ff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 16px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #threatInfoPopup .popup-section-title::before {
+      content: '▸';
+      color: #00d4ff;
+      font-size: 16px;
+    }
+
+    #threatInfoPopup .popup-details-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px 0;
+    }
+
+    #threatInfoPopup .popup-details-list li {
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      background: rgba(0, 212, 255, 0.08);
+      border-left: 2px solid #00d4ff;
+      border-radius: 4px;
+      color: #bcdff0;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #threatInfoPopup .popup-details-list li::before {
+      content: '●';
+      color: #00d4ff;
+      font-size: 10px;
+    }
+
+    #threatInfoPopup .popup-analysis-grid {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    #threatInfoPopup .analysis-item {
+      background: rgba(0, 212, 255, 0.05);
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 212, 255, 0.15);
+    }
+
+    #threatInfoPopup .analysis-label {
+      font-size: 11px;
+      color: #8cc9e0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    #threatInfoPopup .analysis-value {
+      font-size: 13px;
+      color: #cdefff;
+      margin-bottom: 4px;
+    }
+
+    #threatInfoPopup .analysis-status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #threatInfoPopup .analysis-status.MALICIOUS,
+    #threatInfoPopup .analysis-status.CRITICAL {
+      background: rgba(255, 0, 85, 0.2);
+      color: #ff0055;
+    }
+
+    #threatInfoPopup .analysis-status.SUSPICIOUS,
+    #threatInfoPopup .analysis-status.ANOMALOUS {
+      background: rgba(255, 153, 0, 0.2);
+      color: #ff9900;
+    }
+
+    #threatInfoPopup .analysis-status.VERIFIED,
+    #threatInfoPopup .analysis-status.SAFE,
+    #threatInfoPopup .analysis-status.PASSED {
+      background: rgba(0, 255, 136, 0.2);
+      color: #00ff88;
+    }
+
+    #threatInfoPopup .analysis-status.UNKNOWN,
+    #threatInfoPopup .analysis-status.AI_DETECTED {
+      background: rgba(147, 51, 234, 0.2);
+      color: #9333ea;
+    }
+
+    #threatInfoPopup .popup-prevention {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 204, 0.05));
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: #cdefff;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    #threatInfoPopup .popup-prevention strong {
+      color: #00d4ff;
+      font-weight: 700;
+    }
+
+    /* Sample button hover effect */
+    .sample-btn {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .sample-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
+    }
+
+    /* Login Button Styles */
+    .login-button {
+      padding: 10px 24px;
+      background: transparent;
+      border: 2px solid rgba(0, 212, 255, 0.5);
+      color: #00d4ff;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      margin-right: 12px;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+    }
+
+    .login-button:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: #00d4ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
+    }
+
+    .login-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
+    }
+
+    /* Parallax-friendly transforms */
+    .parallax {
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Aurora background system -->
+  <div class="bg-aurora" aria-hidden="true">
+    <div class="aurora-orb aurora-orb-1"></div>
+    <div class="aurora-orb aurora-orb-2"></div>
+    <div class="aurora-orb aurora-orb-3"></div>
+    <div class="aurora-orb aurora-orb-4"></div>
+  </div>
+  <div class="bg-dots" aria-hidden="true"></div>
+  <div class="bg-vignette" aria-hidden="true"></div>
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <div id="scanLayer" aria-hidden="true" style="display:none;"></div>
+
+  <script>
+    /* Lightweight floating particle engine for bgCanvas */
+    (function () {
+      const canvas = document.getElementById('bgCanvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+      const COUNT = 55;
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function rand(a, b) { return a + Math.random() * (b - a); }
+
+      function mkParticle() {
+        return {
+          x: rand(0, W), y: rand(0, H),
+          r: rand(0.6, 2.2),
+          vx: rand(-0.12, 0.12), vy: rand(-0.18, -0.04),
+          alpha: rand(0.08, 0.45),
+          color: Math.random() > 0.5
+            ? `rgba(0,200,255,` : (Math.random() > 0.5
+              ? `rgba(130,60,255,` : `rgba(0,200,140,`)
+        };
+      }
+
+      for (let i = 0; i < COUNT; i++) particles.push(mkParticle());
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color + p.alpha + ')';
+          ctx.fill();
+
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.y < -10) { p.y = H + 10; p.x = rand(0, W); }
+          if (p.x < -10) p.x = W + 10;
+          if (p.x > W + 10) p.x = -10;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+  <!-- Page Transition Overlay -->
+  <div id="pageTransition" aria-hidden="true"></div>
+  <!-- Page Loader - Ultra Advanced AI Simulation -->
+  <div id="pageLoader">
+    <div class="loader-particles" id="loaderParticles"></div>
+    <div class="loader-bg-scan">
+      <div class="scan-bg-line" style="top: 15%;"></div>
+      <div class="scan-bg-line" style="top: 30%;"></div>
+      <div class="scan-bg-line" style="top: 45%;"></div>
+      <div class="scan-bg-line" style="top: 60%;"></div>
+      <div class="scan-bg-line" style="top: 75%;"></div>
+      <div class="scan-bg-line" style="top: 90%;"></div>
+    </div>
+    <div class="loader-content">
+      <style>
+        .dynamic-shield {
+          width: 1em;
+          height: 1em;
+          animation: pulse-shield 2s infinite alternate, float-shield 3s ease-in-out infinite;
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .shield-path {
+          stroke-dasharray: 60;
+          stroke-dashoffset: 0;
+          animation: draw-shield 3s linear infinite alternate;
+        }
+
+        .shield-inner {
+          animation: fade-inner 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-shield {
+          0% {
+            filter: drop-shadow(0 0 5px rgba(0, 217, 255, 0.4));
+            transform: scale(1);
+          }
+
+          100% {
+            filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.8));
+            transform: scale(1.05);
+          }
+        }
+
+        @keyframes float-shield {
+
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+
+          50% {
+            transform: translateY(-2px);
+          }
+        }
+
+        @keyframes draw-shield {
+          0% {
+            stroke-dashoffset: 60;
+          }
+
+          100% {
+            stroke-dashoffset: 0;
+          }
+        }
+
+        @keyframes fade-inner {
+          0% {
+            fill: rgba(0, 217, 255, 0.05);
+          }
+
+          100% {
+            fill: rgba(168, 85, 247, 0.3);
+          }
+        }
+      </style>
+      <div class="loader-logo">
+        <svg class="dynamic-shield" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00d9ff" />
+              <stop offset="100%" stop-color="#a855f7" />
+            </linearGradient>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.5" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path class="shield-inner" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path class="shield-path" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none"
+            stroke="url(#shield-grad)" stroke-width="1.5" filter="url(#glow)" />
+        </svg>
+      </div>
+      <div class="loader-text">SAFE-NET</div>
+      <div class="loader-status" id="loaderStatus">Securing your connection...</div>
+
+      <div class="scan-container">
+        <div class="scan-line"></div>
+        <div class="threat-items">
+          <div class="threat-item">
+            <div class="threat-icon">📊</div>
+            <div class="threat-label">Analyzing</div>
+          </div>
+          <div class="threat-item">
+            <div class="threat-icon">🔍</div>
+            <div class="threat-label">Scanning</div>
+          </div>
+          <div class="threat-item">
+            <div class="threat-icon">🛡️</div>
+            <div class="threat-label">Protecting</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-wrapper">
+        <div class="progress-label">
+          <span>THREAT DATABASE SYNC</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="loader-bar">
+          <div class="loader-progress"></div>
+        </div>
+      </div>
+
+      <div class="loader-footer">
+        <span class="footer-item" id="footerItem1">Neural networks loaded</span>
+        <span class="footer-item" id="footerItem2">Patterns indexed</span>
+        <span class="footer-item" id="footerItem3">Real-time protection armed</span>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <div class="logo">
+          <span class="logo-icon">
+            <svg class="dynamic-shield" viewBox="0 0 24 24" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
+              <path class="shield-inner" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path class="shield-path" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none"
+                stroke="url(#shield-grad)" stroke-width="1.5" filter="url(#glow)" />
+            </svg>
+          </span>
+          <span class="logo-text">SAFE<span class="ai-text">-NET</span></span>
+        </div>
+        <div class="nav-links">
+          <a href="#home" class="nav-link active">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#detection" class="nav-link">Detection</a>
+          <a href="#scenarios" class="nav-link">Scenarios</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <a href="#" class="profile-icon" id="profileIcon" style="display: none;" title="My Profile">
+            <span
+              style="font-size: 24px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 153, 204, 0.15)); border: 1px solid rgba(0, 212, 255, 0.4); border-radius: 50%; transition: all 0.3s ease;">👤</span>
+          </a>
+          <button class="login-button" id="authBtn">🔐 Login</button>
+          <button class="cta-button" id="getStarted" onclick="location.href='safe.html'">🚀 Get Started</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="cyber-grid"></div>
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Protect Your Business from
+          <span class="gradient-text">Cyber Threats</span>
+        </h1>
+        <p class="hero-subtitle">
+          Advanced AI-powered detection system that identifies phishing attacks
+          and cyber fraud in real-time with 99.8% accuracy
+        </p>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number">99.8%</span>
+            <span class="stat-label">Detection Rate</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">0.2ms</span>
+            <span class="stat-label">Response Time</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">5M+</span>
+            <span class="stat-label">Scans Completed</span>
+          </div>
+        </div>
+        <div class="hero-buttons">
+          <button class="cta-button" id="getStarted" onclick="location.href='safe.html'">🚀 Get Started</button>
+          <button class="secondary-button"
+            onclick="window.open('https://youtu.be/18f1wX5457g?si=7p7p7p7p7p7p7p7p', '_blank')">
+            Watch Demo
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✦ MOVING CARDS MARQUEE SECTION ✦ -->
+  <style>
+    /* ── Marquee Section ────────────────────────── */
+    .marquee-section {
+      position: relative;
+      padding: 64px 0 56px;
+      overflow: hidden;
+      z-index: 4;
+    }
+
+    .marquee-section-label {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0, 217, 255, 0.55);
+      margin-bottom: 36px;
+    }
+
+    /* Track wrapper — clips the infinite belt */
+    .marquee-track {
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 18px;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+
+    /* The belt — doubled cards for seamless loop */
+    .marquee-belt {
+      display: flex;
+      gap: 18px;
+      width: max-content;
+      will-change: transform;
+    }
+
+    .marquee-belt.dir-left {
+      animation: beltLeft 32s linear infinite;
+    }
+
+    .marquee-belt.dir-right {
+      animation: beltRight 38s linear infinite;
+    }
+
+    /* Pause on hover over the whole track */
+    .marquee-track:hover .marquee-belt {
+      animation-play-state: paused;
+    }
+
+    @keyframes beltLeft {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes beltRight {
+      from {
+        transform: translateX(-50%);
+      }
+
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    /* ── Individual card ──────────────────────── */
+    .mcard {
+      flex-shrink: 0;
+      width: 260px;
+      padding: 24px;
+      background: rgba(8, 12, 28, 0.4);
+      border: 1px solid rgba(0, 217, 255, 0.08);
+      border-radius: 20px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition:
+        transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        background 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, box-shadow;
+    }
+
+    /* Hover lift */
+    .mcard:hover {
+      transform: translateY(-8px) scale(1.02);
+      background: rgba(8, 12, 28, 0.8);
+      border-color: rgba(0, 217, 255, 0.4);
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(0, 217, 255, 0.1),
+        0 0 40px rgba(0, 217, 255, 0.15);
+    }
+
+    /* Shimmer sweep on hover */
+    .mcard::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 35%, rgba(0, 217, 255, 0.07) 50%, transparent 65%);
+      transform: translateX(-100%);
+      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .mcard:hover::before {
+      transform: translateX(100%);
+    }
+
+    /* Click ripple */
+    .mcard-ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      background: rgba(0, 217, 255, 0.25);
+      pointer-events: none;
+      animation: rippleOut 550ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes rippleOut {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Card content */
+    .mcard-icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .mcard-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e2f4ff;
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    .mcard-desc {
+      font-size: 0.75rem;
+      color: rgba(203, 213, 225, 0.7);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .mcard-badge {
+      display: inline-block;
+      padding: 2px 9px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .mcard-badge.cyan {
+      color: #00d9ff;
+      border-color: rgba(0, 217, 255, 0.35);
+      background: rgba(0, 217, 255, 0.08);
+    }
+
+    .mcard-badge.purple {
+      color: #a855f7;
+      border-color: rgba(168, 85, 247, 0.35);
+      background: rgba(168, 85, 247, 0.08);
+    }
+
+    .mcard-badge.green {
+      color: #4ade80;
+      border-color: rgba(74, 222, 128, 0.35);
+      background: rgba(74, 222, 128, 0.08);
+    }
+
+    .mcard-badge.orange {
+      color: #f97316;
+      border-color: rgba(249, 115, 22, 0.35);
+      background: rgba(249, 115, 22, 0.08);
+    }
+
+    .mcard-badge.red {
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.35);
+      background: rgba(239, 68, 68, 0.08);
+    }
+  </style>
+
+  <div class="marquee-section">
+    <p class="marquee-section-label">⚡ SAFE-NET Capabilities</p>
+
+    <!-- ROW 1 — scrolls LEFT (→ left) -->
+    <div class="marquee-track">
+      <div class="marquee-belt dir-left" id="belt1">
+        <!-- Set A -->
+        <div class="mcard"><span class="mcard-icon">✉️</span>
+          <div class="mcard-title">Email & Text Scanning</div>
+          <div class="mcard-desc">Instantly analyzes raw text and email headers to detect urgency triggers and spoofed
+            domains.
+          </div><span class="mcard-badge cyan">NLP CORE</span>
+        </div>
+        <div class="mcard"><span class="mcard-icon">🔗</span>
+          <div class="mcard-title">URL Reputation</div>
+          <div class="mcard-desc">Cross-references links against our live phishing database for SSL checks and deceptive
+            domains.
+          </div><span class="mcard-badge purple">DEEP URL</span>
+        </div>
+        <div class="mcard"><span class="mcard-icon">🖼️</span>
+          <div class="mcard-title">Image OCR Analysis</div>
+          <div class="mcard-desc">Extracts hidden text from suspicious screenshots and images sent by scammers.</div>
+          <span class="mcard-badge green">VISION</span>
+        </div>
+        <div class="mcard"><span class="mcard-icon">🧠</span>
+          <div class="mcard-title">Sentiment Scoring</div>
+          <div class="mcard-desc">Uses TensorFlow's Universal Sentence Encoder to score psychological manipulation.
+          </div><span class="mcard-badge orange">AI ENGINE</span>
+        </div>
+        <!-- Set B (duplicate for seamless loop) -->
+        <div class="mcard"><span class="mcard-icon">✉️</span>
+          <div class="mcard-title">Email & Text Scanning</div>
+          <div class="mcard-desc">Instantly analyzes raw text and email headers to detect urgency triggers and spoofed
+            domains.
+          </div><span class="mcard-badge cyan">NLP CORE</span>
+        </div>
+        <div class="mcard"><span class="mcard-icon">🔗</span>
+          <div class="mcard-title">URL Reputation</div>
+          <div class="mcard-desc">Cross-references links against our live phishing database for SSL checks and deceptive
+            domains.
+          </div><span class="mcard-badge purple">DEEP URL</span>
+        </div>
+        <div class="mcard"><span class="mcard-icon">🖼️</span>
+          <div class="mcard-title">Image OCR Analysis</div>
+          <div class="mcard-desc">Extracts hidden text from suspicious screenshots and images sent by scammers.</div>
+          <span class="mcard-badge green">VISION</span>
+        </div>
+        <div class="mcard"><span class="mcard-icon">🧠</span>
+          <div class="mcard-title">Sentiment Scoring</div>
+          <div class="mcard-desc">Uses TensorFlow's Universal Sentence Encoder to score psychological manipulation.
+          </div><span class="mcard-badge orange">AI ENGINE</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* Click ripple effect on marquee cards */
+      document.querySelectorAll('.mcard').forEach(card => {
+        card.addEventListener('click', function (e) {
+          const rect = this.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = e.clientX - rect.left - size / 2;
+          const y = e.clientY - rect.top - size / 2;
+          const ripple = document.createElement('span');
+          ripple.classList.add('mcard-ripple');
+          ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
+          this.appendChild(ripple);
+          ripple.addEventListener('animationend', () => ripple.remove());
+        });
+      });
+    </script>
+
+    <!-- About Section -->
+
+    <section id="about" class="about">
+      <div class="container" style="max-width: 100%;">
+        <div style="text-align:center; margin-bottom: 50px;">
+          <h2 class="section-title" style="margin-bottom: 20px;">
+            Acknowledge Your <span class="text-primary">Threats.</span><br>Understand The Landscape.
+          </h2>
+          <p style="max-width:650px; margin: 0 auto; color:var(--text-secondary); font-size: 1.1rem; line-height: 1.6;">
+            Our mission is to empower you against the fast-paced evolution of online scams, blending high-tech analysis
+            with lightning-fast protection.
+          </p>
+        </div>
+
+        <div class="marquee-section" style="padding: 0; margin-bottom: 40px;">
+          <div class="marquee-track"
+            style="margin: 0; -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%);">
+            <div class="marquee-belt dir-left" style="animation-duration: 45s; gap: 24px;">
+              <!-- Set A -->
+              <div class="feature-item"
+                style="min-width: 300px; padding: 24px; flex-shrink:0; background: linear-gradient(145deg, rgba(8, 12, 28, 0.6), rgba(239, 68, 68, 0.05)); border: 1px solid rgba(239, 68, 68, 0.15);">
+                <div class="feature-icon"
+                  style="width: 36px; height: 36px; font-size: 1.1rem; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);">
+                  🎯</div>
+                <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 8px; font-weight: 800;">Phishing Attacks</h3>
+                <p style="color: var(--text-secondary); line-height: 1.5; font-size: 0.9rem;">Deceptive messages
+                  engineered to harvest your passwords and identity.</p>
+              </div>
+              <div class="feature-item"
+                style="min-width: 300px; padding: 24px; flex-shrink:0; background: linear-gradient(145deg, rgba(8, 12, 28, 0.6), rgba(249, 115, 22, 0.05)); border: 1px solid rgba(249, 115, 22, 0.15);">
+                <div class="feature-icon"
+                  style="width: 36px; height: 36px; font-size: 1.1rem; background: rgba(249, 115, 22, 0.1); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.2); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.15);">
+                  💳</div>
+                <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 8px; font-weight: 800;">Fake Payment Links
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.5; font-size: 0.9rem;">Spoofed invoices designed
+                  to trick users into sending money quietly.</p>
+              </div>
+              <div class="feature-item"
+                style="min-width: 300px; padding: 24px; flex-shrink:0; background: linear-gradient(145deg, rgba(8, 12, 28, 0.6), rgba(168, 85, 247, 0.05)); border: 1px solid rgba(168, 85, 247, 0.15);">
+                <div class="feature-icon"
+                  style="width: 36px; height: 36px; font-size: 1.1rem; background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15);">
+                  🤖</div>
+                <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 8px; font-weight: 800;">AI DeepFake Scams</h3>
+                <p style="color: var(--text-secondary); line-height: 1.5; font-size: 0.9rem;">AI-generated figures
+                  impersonating trusted executives to extract funds.</p>
+              </div>
+
+              <!-- Set B (duplicate) -->
+              <div class="feature-item"
+                style="min-width: 300px; padding: 24px; flex-shrink:0; background: linear-gradient(145deg, rgba(8, 12, 28, 0.6), rgba(239, 68, 68, 0.05)); border: 1px solid rgba(239, 68, 68, 0.15);">
+                <div class="feature-icon"
+                  style="width: 36px; height: 36px; font-size: 1.1rem; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);">
+                  🎯</div>
+                <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 8px; font-weight: 800;">Phishing Attacks</h3>
+                <p style="color: var(--text-secondary); line-height: 1.5; font-size: 0.9rem;">Deceptive messages
+                  engineered to harvest your passwords and identity.</p>
+              </div>
+              <div class="feature-item"
+                style="min-width: 300px; padding: 24px; flex-shrink:0; background: linear-gradient(145deg, rgba(8, 12, 28, 0.6), rgba(249, 115, 22, 0.05)); border: 1px solid rgba(249, 115, 22, 0.15);">
+                <div class="feature-icon"
+                  style="width: 36px; height: 36px; font-size: 1.1rem; background: rgba(249, 115, 22, 0.1); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.2); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.15);">
+                  💳</div>
+                <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 8px; font-weight: 800;">Fake Payment Links
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.5; font-size: 0.9rem;">Spoofed invoices designed
+                  to trick users into sending money quietly.</p>
+              </div>
+              <div class="feature-item"
+                style="min-width: 300px; padding: 24px; flex-shrink:0; background: linear-gradient(145deg, rgba(8, 12, 28, 0.6), rgba(168, 85, 247, 0.05)); border: 1px solid rgba(168, 85, 247, 0.15);">
+                <div class="feature-icon"
+                  style="width: 36px; height: 36px; font-size: 1.1rem; background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15);">
+                  🤖</div>
+                <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 8px; font-weight: 800;">AI DeepFake Scams</h3>
+                <p style="color: var(--text-secondary); line-height: 1.5; font-size: 0.9rem;">AI-generated figures
+                  impersonating trusted executives to extract funds.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="features-section">
+          <h3 class="features-title">Why Choose SAFE-NET?</h3>
+          <div class="features-list">
+            <div class="feature-item">
+              <span class="feature-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                </svg>
+              </span>
+              <div>
+                <h4>AI-Powered Detection</h4>
+                <p>Machine learning models trained on millions of threat samples.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                  <path
+                    d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.16-.28L11.33 3H14l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z" />
+                </svg>
+              </span>
+              <div>
+                <h4>Real-Time Protection</h4>
+                <p>Instant threat identification and response within milliseconds.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                  <path
+                    d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                </svg>
+              </span>
+              <div>
+                <h4>Zero Trust Architecture</h4>
+                <p>Verify every access attempt with multi-layer security protocols.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                  <path
+                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                </svg>
+              </span>
+              <div>
+                <h4>24/7 Monitoring</h4>
+                <p>Continuous surveillance of all security events and anomalies.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                  <path
+                    d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                </svg>
+              </span>
+              <div>
+                <h4>Compliance Ready</h4>
+                <p>GDPR, HIPAA, and SOC 2 compliant security infrastructure.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                  <path
+                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                </svg>
+              </span>
+              <div>
+                <h4>Incident Response</h4>
+                <p>Automated response mechanisms and detailed breach analysis.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // 3D Tilt interaction for feature cards to make them truly transitional
+      document.querySelectorAll('.feature-item').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const xPercent = x / rect.width;
+          const yPercent = y / rect.height;
+
+          const maxRotate = 10;
+          const rotateX = maxRotate * (0.5 - yPercent);
+          const rotateY = maxRotate * (xPercent - 0.5);
+
+          // Give a realistic 3D transform + spotlight tracking effect
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+          card.style.transition = 'none'; // remove transition for smooth tracking
+        });
+
+        card.addEventListener('mouseleave', () => {
+          // Revert back when mouse leaves
+          card.style.transform = '';
+          card.style.transition = 'transform 0.5s ease-out, box-shadow 0.5s ease';
+        });
+
+        card.addEventListener('mouseenter', () => {
+          card.style.transition = 'transform 0.1s ease-out';
+        });
+      });
+    </script>
+
+    <!-- Interactive Detection Demo -->
+    <section id="detection" class="detection-demo">
+      <div class="container">
+
+        <!-- Quick Test Samples removed -->
+      </div>
+    </section>
+
+    <!-- Threat Info Popup removed -->
+
+    <!-- Real-World Scenarios -->
+    <section id="scenarios" class="scenarios">
+      <div class="container">
+        <h2 class="section-title">
+          Real-World <span class="text-primary">Threat Scenarios</span>
+        </h2>
+
+        <div class="scenarios-grid">
+          <!-- Scenario 1 -->
+          <div class="scenario-card">
+            <div class="scenario-header">
+              <span class="scenario-number">01</span>
+              <span class="scenario-badge critical">CRITICAL</span>
+            </div>
+            <h3>Executive Impersonation Attack</h3>
+            <div class="scenario-description">
+              <p>
+                <strong>The Threat:</strong> Attacker spoofs CEO email address requesting
+                urgent wire transfer of $250,000 to supplier.
+              </p>
+              <div class="scenario-indicators">
+                <div class="indicator red">Spoofed Domain</div>
+                <div class="indicator red">Urgency Tactics</div>
+              </div>
+              <p>
+                <strong>Our Detection:</strong> SAFE-NET flags sender domain mismatch, analyzes writing patterns, and
+                alerts finance immediately.
+              </p>
+            </div>
+          </div>
+
+          <!-- Scenario 2 -->
+          <div class="scenario-card">
+            <div class="scenario-header">
+              <span class="scenario-number">02</span>
+              <span class="scenario-badge high">HIGH</span>
+            </div>
+            <h3>Credential Harvesting via Fake Portal</h3>
+            <div class="scenario-description">
+              <p>
+                <strong>The Threat:</strong> Email with link to fake bank login portal
+                designed to steal username and password.
+              </p>
+              <div class="scenario-indicators">
+                <div class="indicator red">Malicious URL</div>
+                <div class="indicator orange">Phishing Form</div>
+              </div>
+              <p>
+                <strong>Our Detection:</strong> AI scans URLs against phishing databases, validates SSL checks, and
+                blocks
+                credential entry.
+              </p>
+            </div>
+          </div>
+
+          <!-- Scenario 3 -->
+          <div class="scenario-card">
+            <div class="scenario-header">
+              <span class="scenario-number">03</span>
+              <span class="scenario-badge medium">MEDIUM</span>
+            </div>
+            <h3>Payment Fraud Detection</h3>
+            <div class="scenario-description">
+              <p>
+                <strong>The Threat:</strong> Unauthorized transaction detected from
+                user account in different geographic location within seconds.
+              </p>
+              <div class="scenario-indicators">
+                <div class="indicator orange">Geo Anomaly</div>
+                <div class="indicator orange">New Merchant</div>
+              </div>
+              <p>
+                <strong>Our Detection:</strong> AI correlates device location, transaction velocity, and spending
+                patterns
+                to flag anomalous activities.
+              </p>
+            </div>
+          </div>
+
+          <!-- Scenario 4 -->
+          <div class="scenario-card">
+            <div class="scenario-header">
+              <span class="scenario-number">04</span>
+              <span class="scenario-badge medium">MEDIUM</span>
+            </div>
+            <h3>Social Engineering via Support</h3>
+            <div class="scenario-description">
+              <p>
+                <strong>The Threat:</strong> Attacker impersonates support staff to trick
+                user into sharing sensitive information.
+              </p>
+              <div class="scenario-indicators">
+                <div class="indicator orange">Identity Spoofing</div>
+                <div class="indicator orange">Social Engineering</div>
+              </div>
+              <p>
+                <strong>Our Detection:</strong> AI analyzes communication patterns,
+                verifies staff identity, and stops the social engineering tactics immediately.
+              </p>
+            </div>
+          </div>
+
+          <!-- Scenario 5 -->
+          <div class="scenario-card">
+            <div class="scenario-header">
+              <span class="scenario-number">05</span>
+              <span class="scenario-badge critical">CRITICAL</span>
+            </div>
+            <h3>Ransomware Payload Delivery</h3>
+            <div class="scenario-description">
+              <p>
+                <strong>The Threat:</strong> A vendor's compromised email sends an invoice PDF containing a zero-day
+                exploit.
+              </p>
+              <div class="scenario-indicators">
+                <div class="indicator red">Zero-Day Signature</div>
+                <div class="indicator red">Hidden Macros</div>
+              </div>
+              <p>
+                <strong>Our Detection:</strong> Our sandboxing engine detonates the payload in an isolated environment
+                and
+                drops the email safely.
+              </p>
+            </div>
+          </div>
+
+          <!-- Scenario 6 -->
+          <div class="scenario-card">
+            <div class="scenario-header">
+              <span class="scenario-number">06</span>
+              <span class="scenario-badge high">HIGH</span>
+            </div>
+            <h3>Supply Chain Compromise</h3>
+            <div class="scenario-description">
+              <p>
+                <strong>The Threat:</strong> A trusted third-party software update is poisoned with a backdoor.
+              </p>
+              <div class="scenario-indicators">
+                <div class="indicator red">Outbound Traffic</div>
+                <div class="indicator orange">Unusual Processes</div>
+              </div>
+              <p>
+                <strong>Our Detection:</strong> Behavioral tracking flags the application attempting unauthorized
+                connections and quarantines the process.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2 class="section-title">
+          Get in <span class="text-primary">Touch</span>
+        </h2>
+
+        <div class="contact-content">
+          <div class="contact-info">
+            <div class="info-card">
+              <div class="info-icon">📧</div>
+              <h3>Email</h3>
+              <p>nforspeed492@gmail.com</p>
+              <p class="info-detail">Response within 4 hours</p>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">📞</div>
+              <h3>Phone</h3>
+              <p>+91 9462534117</p>
+              <p class="info-detail">24/7 Support Available</p>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">📍</div>
+              <h3>Campus</h3>
+              <p>PIET Jaipur</p>
+              <p class="info-detail">Rajasthan, India</p>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">🔗</div>
+              <h3>Social</h3>
+              <div class="social-links">
+                <a href="https://www.linkedin.com/in/divyansh-tak-b0334b362?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                  class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/divyansh10011" class="social-link" target="_blank"
+                  rel="noopener noreferrer">GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contactForm">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required placeholder="Your name" />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required placeholder="your@email.com" />
+            </div>
+
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" placeholder="Your company" />
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" required placeholder="How can we help?" />
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required placeholder="Your message here..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-button">Send Message</button>
+            <div id="formMessage" class="form-message"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Emergency AI Agent Bubble & Chat Window -->
+    <div class="emergency-agent-container" id="emergencyAgentContainer">
+      <div class="emergency-chat-window" id="emergencyChatWindow">
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <span class="chat-icon">🛡️</span>
+            <div>
+              <h4 style="display:flex;align-items:center;gap:6px;">SAFE-NET AI <span class="pulse-dot"
+                  style="display:inline-block;width:6px;height:6px;background:#38bdf8;border-radius:50%;box-shadow:0 0 5px #38bdf8;animation:rapidPulse 0.8s infinite alternate;"></span>
+              </h4>
+              <p>Emergency Threat Analyst</p>
+            </div>
+          </div>
+          <button class="close-chat" id="closeChatBtn">&times;</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="message ai-message">
+            <div class="msg-avatar">🤖</div>
+            <div class="msg-content">
+              <strong>[SYSTEM INITIALIZED] SAFE_CORE</strong><br>
+              Awaiting parameters. Select a threat vector below, or choose "Other" to describe your specific anomaly
+              manually.
+            </div>
+          </div>
+        </div>
+        <div class="chat-options-area" id="chatOptionsArea"
+          style="padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <button class="chat-option-btn" data-query="Suspicious Phishing Email">📧 Phishing Email</button>
+          <button class="chat-option-btn" data-query="Ransomware Activity">🔒 Ransomware Attack</button>
+          <button class="chat-option-btn" data-query="Fake Payment Demo">💳 Payment Fraud</button>
+          <button class="chat-option-btn" id="otherOptionBtn">📝 Other (Type)</button>
+        </div>
+        <div class="chat-input-area" id="chatInputArea"
+          style="display: none; padding: 16px; background: rgba(0, 0, 0, 0.4); border-top: 1px solid rgba(56, 189, 248, 0.2); gap: 8px;">
+          <input type="text" id="aiChatInput" placeholder="Describe threat or anomaly..."
+            style="flex: 1; padding: 10px 14px; background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; color: #e0f2fe; font-size: 0.85rem; outline: none;">
+          <button id="aiChatSubmitBtn"
+            style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 8px; padding: 0 16px; cursor: pointer; transition: all 0.2s; font-weight: bold;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="emergency-agent-btn" id="emergencyAgentBtn">
+        <span class="pulse-ring"></span>
+        <span class="btn-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+            <circle cx="12" cy="5" r="2"></circle>
+            <path d="M12 7v4"></path>
+            <line x1="8" y1="16" x2="8" y2="16"></line>
+            <line x1="16" y1="16" x2="16" y2="16"></line>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>SAFE-NET</h4>
+            <p>Protecting businesses from cyber threats with advanced AI detection</p>
+          </div>
+          <div class="footer-section">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#detection">Detection System</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="pricing.html">Pricing</a></li>
+              <li><a href="documentation.html">Documentation</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="blog.html">Blog</a></li>
+              <li><a href="careers.html">Careers</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="privacy.html">Privacy Policy</a></li>
+              <li><a href="terms.html">Terms of Service</a></li>
+              <li><a href="security.html">Security</a></li>
+              <li><a href="compliance.html">Compliance</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 SAFE-NET. All rights reserved. | Professional Cybersecurity Solutions</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scenario Modal -->
+    <div id="scenarioModalOverlay" class="scenario-modal-overlay">
+      <div class="scenario-modal-content" id="scenarioModalContent">
+        <button class="close-modal" id="closeScenarioModal">&times;</button>
+        <div id="scenarioModalBody"></div>
+      </div>
+    </div>
+
+    <script>
+      // ============================================================================
+      // ADVANCED DETECTION SYSTEM - INTEGRATED FROM SCRIPT.JS
+      // ============================================================================
+
+      // Global Configuration
+      const CONFIG = {
+        apiDelay: 300,
+        scanDuration: 3000,
+        alertThreshold: 0.7,
+        animationDuration: 600
+      };
+
+      // State Management
+      let appState = {
+        isScanning: false,
+        alertLevel: 'safe',
+        detectionHistory: [],
+        networkStats: {
+          packets: 0,
+          threats: 0,
+          blocked: 0
+        }
+      };
+
+      // Quick Test Samples JavaScript removed
+
+      // Enhanced contact form handler
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const formInputs = this.querySelectorAll('input, textarea');
+          const submitBtn = this.querySelector('.submit-button');
+          const originalText = submitBtn.textContent;
+
+          // Validate all fields
+          let isValid = true;
+          formInputs.forEach(input => {
+            if (!input.value.trim()) isValid = false;
+          });
+
+          if (!isValid) {
+            submitBtn.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+              submitBtn.style.animation = '';
+            }, 500);
+            return;
+          }
+
+          submitBtn.innerHTML = '<div class="loading" style="display: inline-block; margin-right: 10px;"></div> Sending...';
+          submitBtn.disabled = true;
+
+          setTimeout(() => {
+            submitBtn.innerHTML = '✓ Message Sent Successfully!';
+            submitBtn.style.background = 'rgba(0, 212, 255, 0.2)';
+            submitBtn.style.color = '#00d4ff';
+
+            const formMessage = document.getElementById('formMessage');
+            formMessage.textContent = '✓ Thank you! Our team will contact you shortly.';
+            formMessage.style.color = '#00d4ff';
+
+            // Form animation
+            formInputs.forEach((input, index) => {
+              setTimeout(() => {
+                input.style.opacity = '0.7';
+              }, index * 50);
+            });
+
+            setTimeout(() => {
+              submitBtn.textContent = originalText;
+              submitBtn.style.background = '';
+              submitBtn.style.color = '';
+              submitBtn.disabled = false;
+              formMessage.textContent = '';
+              formInputs.forEach(input => {
+                input.style.opacity = '1';
+              });
+              this.reset();
+            }, 3000);
+          }, 1500);
+        });
+      }
+
+      // Interactive scenario card modal logic
+      const scenarioCards = document.querySelectorAll('.scenario-card');
+      const scenarioModalOverlay = document.getElementById('scenarioModalOverlay');
+      const scenarioModalBody = document.getElementById('scenarioModalBody');
+      const closeScenarioModal = document.getElementById('closeScenarioModal');
+
+      scenarioCards.forEach(card => {
+        card.addEventListener('click', function () {
+          // Clear previous
+          scenarioModalBody.innerHTML = '';
+
+          // Clone the clicked card
+          const cardClone = this.cloneNode(true);
+          const description = cardClone.querySelector('.scenario-description');
+          const preventionTips = cardClone.querySelector('.prevention-tips');
+
+          // Show full description and add assessment content inside modal
+          description.style.maxHeight = 'none';
+          if (preventionTips) preventionTips.style.display = 'block';
+
+          const assessment = document.createElement('div');
+          assessment.className = 'detailed-assessment';
+          assessment.innerHTML = `
+            <h4 style="color: #00d4ff; margin: 20px 0 10px 0; font-size: 14px;">🔍 Detailed Risk Assessment</h4>
+            <div style="background: rgba(0, 212, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(0, 212, 255, 0.2);">
+              <div style="display: grid; gap: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: #8cc9e0;">Attack Vector:</span>
+                  <span style="color: #00d4ff; font-weight: 600;">${this.querySelector('h3').textContent.includes('Executive') ? 'Email Spoofing' : this.querySelector('h3').textContent.includes('Credential') ? 'Phishing Portal' : this.querySelector('h3').textContent.includes('Payment') ? 'Transaction Anomaly' : 'Social Engineering'}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: #8cc9e0;">Detection Confidence:</span>
+                  <span style="color: #00ff88; font-weight: 600;">${this.querySelector('.scenario-badge').classList.contains('critical') ? '98%' : this.querySelector('.scenario-badge').classList.contains('high') ? '95%' : '87%'}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: #8cc9e0;">Response Time:</span>
+                  <span style="color: #00ff88; font-weight: 600;">${this.querySelector('.scenario-badge').classList.contains('critical') ? '< 1 second' : '< 5 seconds'}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: #8cc9e0;">Business Impact:</span>
+                  <span style="color: ${this.querySelector('.scenario-badge').classList.contains('critical') ? '#ff0055' : this.querySelector('.scenario-badge').classList.contains('high') ? '#ff9900' : '#ffff00'}; font-weight: 600;">
+                    ${this.querySelector('.scenario-badge').classList.contains('critical') ? 'HIGH' : this.querySelector('.scenario-badge').classList.contains('high') ? 'MEDIUM' : 'LOW'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          `;
+          description.appendChild(assessment);
+
+          scenarioModalBody.appendChild(cardClone);
+
+          // Trigger animations inside modal clone
+          const indicators = cardClone.querySelectorAll('.indicator');
+          indicators.forEach((indicator, index) => {
+            indicator.style.animation = `slideIn 0.5s ease-out ${index * 0.1}s both`;
+            indicator.style.transform = 'scale(1.1)';
+          });
+
+          // Show the modal
+          scenarioModalOverlay.classList.add('active');
+        });
+      });
+
+      closeScenarioModal.addEventListener('click', () => {
+        scenarioModalOverlay.classList.remove('active');
+        setTimeout(() => { scenarioModalBody.innerHTML = ''; }, 300);
+      });
+
+      scenarioModalOverlay.addEventListener('click', (e) => {
+        if (e.target === scenarioModalOverlay) {
+          scenarioModalOverlay.classList.remove('active');
+          setTimeout(() => { scenarioModalBody.innerHTML = ''; }, 300);
+        }
+      });
+
+      // Animated statistics counters with scroll trigger
+      function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 60;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            const suffix = element.textContent.includes('%') ? '%' :
+              element.textContent.includes('ms') ? 'ms' : 'K+';
+            element.textContent = target + suffix;
+            clearInterval(timer);
+          } else {
+            const displayValue = Math.floor(current);
+            const suffix = element.textContent.includes('%') ? '%' :
+              element.textContent.includes('ms') ? 'ms' : 'K+';
+            element.textContent = displayValue + suffix;
+          }
+        }, 30);
+      }
+
+      // Enhanced Intersection Observer for dynamic interactions
+      const dynamicObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Trigger animations and popups on scroll
+            const element = entry.target;
+
+            // Stat cards animation
+            if (element.classList.contains('stat-card') && !element.classList.contains('counted')) {
+              element.classList.add('counted');
+              element.classList.add('scan-effect');
+              const stat = element.querySelector('.stat-number');
+              if (stat) {
+                const text = stat.textContent;
+                const number = parseFloat(text);
+                animateCounter(stat, number);
+              }
+            }
+
+            // About cards hover effect on scroll
+            if (element.classList.contains('about-card')) {
+              setTimeout(() => {
+                element.style.transform = 'translateY(-10px) scale(1.02)';
+                element.style.boxShadow = '0 20px 40px rgba(0, 212, 255, 0.2)';
+                setTimeout(() => {
+                  element.style.transform = '';
+                  element.style.boxShadow = '';
+                }, 2000);
+              }, 500);
+            }
+
+            // Feature items animation
+            if (element.classList.contains('feature-item')) {
+              element.style.animation = 'slideInUp 0.8s ease-out forwards';
+            }
+
+            // Scenario cards auto-expand on scroll
+            if (element.classList.contains('scenario-card')) {
+              setTimeout(() => {
+                const description = element.querySelector('.scenario-description');
+                const indicators = element.querySelectorAll('.indicator');
+                const preventionTips = element.querySelector('.prevention-tips');
+
+                if (description) description.style.maxHeight = description.scrollHeight + 'px';
+                if (preventionTips) preventionTips.style.display = 'block';
+
+                // Add detailed assessment content
+                if (!element.querySelector('.detailed-assessment')) {
+                  const assessment = document.createElement('div');
+                  assessment.className = 'detailed-assessment';
+                  assessment.innerHTML = `
+                    <h4 style="color: #00d4ff; margin: 20px 0 10px 0; font-size: 14px;">🔍 Detailed Risk Assessment</h4>
+                    <div style="background: rgba(0, 212, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(0, 212, 255, 0.2);">
+                      <div style="display: grid; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Attack Vector:</span>
+                          <span style="color: #00d4ff; font-weight: 600;">${element.querySelector('h3').textContent.includes('Executive') ? 'Email Spoofing' : element.querySelector('h3').textContent.includes('Credential') ? 'Phishing Portal' : element.querySelector('h3').textContent.includes('Payment') ? 'Transaction Anomaly' : 'Social Engineering'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Detection Confidence:</span>
+                          <span style="color: #00ff88; font-weight: 600;">${element.querySelector('.scenario-badge').classList.contains('critical') ? '98%' : element.querySelector('.scenario-badge').classList.contains('high') ? '95%' : '87%'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Response Time:</span>
+                          <span style="color: #00ff88; font-weight: 600;">${element.querySelector('.scenario-badge').classList.contains('critical') ? '< 1 second' : '< 5 seconds'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Business Impact:</span>
+                          <span style="color: ${element.querySelector('.scenario-badge').classList.contains('critical') ? '#ff0055' : element.querySelector('.scenario-badge').classList.contains('high') ? '#ff9900' : '#ffff00'}; font-weight: 600;">
+                            ${element.querySelector('.scenario-badge').classList.contains('critical') ? 'HIGH' : element.querySelector('.scenario-badge').classList.contains('high') ? 'MEDIUM' : 'LOW'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                  element.querySelector('.scenario-description').appendChild(assessment);
+                }
+
+                // Animate indicators
+                indicators.forEach((indicator, index) => {
+                  setTimeout(() => {
+                    indicator.style.animation = `slideIn 0.5s ease-out ${index * 0.1}s both`;
+                    indicator.style.transform = 'scale(1.1)';
+                  }, index * 100);
+                });
+
+                // Add glow effect
+                element.style.boxShadow = '0 20px 60px rgba(0, 212, 255, 0.4)';
+              }, 1000);
+            }
+          }
+        });
+      }, { threshold: 0.3, rootMargin: '0px 0px -100px 0px' });
+
+      // Observe all interactive elements
+      document.querySelectorAll('.stat-card, .about-card, .feature-item, .scenario-card').forEach(element => {
+        dynamicObserver.observe(element);
+      });
+
+      // Enhanced hover interactions removed (tooltips removed)
+
+      // Dynamic particle effects on scroll removed per user request
+
+      // Add scroll float animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes scrollFloat {
+          0% { transform: translateY(0) scale(1); opacity: 1; }
+          50% { transform: translateY(-20px) scale(1.2); opacity: 0.8; }
+          100% { transform: translateY(-40px) scale(0); opacity: 0; }
+        }
+        .dynamic-tooltip {
+          animation: tooltipPulse 2s ease-in-out infinite;
+        }
+        @keyframes tooltipPulse {
+          0%, 100% { transform: translate(-50%, -100%) scale(1); }
+          50% { transform: translate(-50%, -100%) scale(1.05); }
+        }
+      `;
+      document.head.appendChild(style);
+
+      // Enhanced particle system
+      function createParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.width = Math.random() * 12 + 3 + 'px';
+        particle.style.height = particle.style.width;
+
+        const colors = ['rgba(0, 212, 255, 0.8)', 'rgba(0, 153, 204, 0.8)', 'rgba(0, 100, 150, 0.8)'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.borderRadius = '50%';
+        particle.style.pointerEvents = 'none';
+        particle.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px currentColor`;
+
+        document.body.appendChild(particle);
+
+        const duration = Math.random() * 3000 + 1500;
+        const offsetX = (Math.random() - 0.5) * 200;
+        const offsetY = -Math.random() * 200 - 100;
+
+        const animation = particle.animate([
+          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          { transform: `translate(${offsetX}px, ${offsetY}px) scale(0)`, opacity: 0 }
+        ], duration);
+
+        animation.onfinish = () => particle.remove();
+      }
+
+      // Mouse tracking with particle effects
+      document.addEventListener('mousemove', (e) => {
+        if (Math.random() > 0.96) {
+          createParticle(e.clientX, e.clientY);
+        }
+      });
+
+      // Click particles
+      document.addEventListener('click', (e) => {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            createParticle(e.clientX, e.clientY);
+          }, i * 50);
+        }
+      });
+
+      // Active nav link tracking with smooth transitions
+      window.addEventListener('scroll', () => {
+        let current = '';
+        const sections = document.querySelectorAll('section');
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (scrollY >= sectionTop - 300) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').slice(1) === current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      // Smooth scroll for nav links with easing
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Enhanced page transitions, parallax and AI assistant
+      // Create page mask element (used for ultra transitions)
+      (function () {
+        const mask = document.createElement('div');
+        mask.id = 'pageMask';
+        mask.innerHTML = '<div class="maskCircle"></div>';
+        document.body.appendChild(mask);
+
+        function reveal(xPct = 50, yPct = 50, cb) {
+          mask.style.setProperty('--mx', xPct + '%');
+          mask.style.setProperty('--my', yPct + '%');
+          mask.classList.add('revealing');
+          setTimeout(() => {
+            if (typeof cb === 'function') cb();
+            setTimeout(() => mask.classList.remove('revealing'), 420);
+          }, 260);
+        }
+
+        // Override nav link behavior to use page transition effect
+        document.querySelectorAll('.nav-link, a[href^="#"]').forEach(link => {
+          link.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            e.preventDefault();
+
+            const pageTransition = document.getElementById('pageTransition');
+            const target = document.querySelector(href);
+
+            // Fade in transition overlay
+            pageTransition.classList.add('active');
+
+            // Navigate after transition starts
+            setTimeout(() => {
+              if (target) {
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                target.scrollIntoView({ behavior: 'instant', block: 'start' });
+              }
+              // Fade out transition overlay
+              pageTransition.classList.remove('active');
+            }, 220);
+          });
+        });
+      })();
+
+      // Pointer-driven parallax for hero and subtle page layers - DISABLED
+      // (function(){
+      //   const hero = document.querySelector('.hero-content');
+      //   const grid = document.querySelector('.cyber-grid');
+      //   const canvas = document.getElementById('bgCanvas');
+      //   let w = innerWidth, h = innerHeight;
+      //
+      //   function onMove(e){
+      //     const x = (e.clientX / w - 0.5) * 2; // -1..1
+      //     const y = (e.clientY / h - 0.5) * 2;
+      //     if (hero) hero.style.transform = `translate3d(${x*8}px, ${y*8}px, 0) rotateY(${x*3}deg)`;
+      //     if (grid) grid.style.transform = `translate3d(${x*20}px, ${y*12}px, 0)`;
+      //     if (canvas) canvas.style.transform = `translate3d(${x*6}px, ${y*6}px, 0)`;
+      //   }
+      //
+      //   addEventListener('mousemove', (e) => {
+      //     requestAnimationFrame(() => onMove(e));
+      //   });
+      // })();
+
+      // AI Assistant removed
+
+      // Device orientation support for mobile parallax (gentle, no shake)
+      window.addEventListener('deviceorientation', (ev) => {
+        const hero = document.querySelector('.hero-content');
+        const gx = ev.gamma || 0;
+        const by = ev.beta || 0;
+        const tx = Math.max(-8, Math.min(8, gx));
+        const ty = Math.max(-6, Math.min(6, by - 5));
+        if (hero) hero.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      }, { passive: true });
+
+      // Page loader fade-out on load with ultra-advanced progress tracking
+      window.addEventListener('load', () => {
+        const loader = document.getElementById('pageLoader');
+        const progressPercent = document.getElementById('progressPercent');
+        let progress = 0;
+
+        // Simulate realistic AI load progression with logarithmic easing
+        const interval = setInterval(() => {
+          const remaining = 100 - progress;
+          const increment = remaining * (Math.random() * 0.15 + 0.05);
+          progress = Math.min(progress + increment, 96);
+
+          if (progressPercent) progressPercent.textContent = Math.floor(progress) + '%';
+
+          if (progress >= 96) {
+            clearInterval(interval);
+            progress = 100;
+            if (progressPercent) progressPercent.textContent = '100%';
+
+            // Fade out loader
+            setTimeout(() => {
+              if (loader) {
+                loader.style.transition = 'all 0.6s cubic-bezier(.2,.9,.2,1)';
+                loader.classList.add('fade-out');
+              }
+            }, 400);
+          }
+        }, 80);
+      });
+
+      // Close detection result and modal on ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const dr = document.getElementById('detectionResult');
+          if (dr) dr.style.display = 'none';
+          const demoModal = document.getElementById('demoModal');
+          if (demoModal && demoModal.getAttribute('aria-hidden') === 'false') {
+            demoModal.style.display = 'none';
+            demoModal.setAttribute('aria-hidden', 'true');
+          }
+        }
+      });
+
+      // Real-time network statistics updates
+      (function () {
+        const packetsSeen = document.getElementById('packetsSeen');
+        const threatsFound = document.getElementById('threatsFound');
+        const blockRate = document.getElementById('blockRate');
+        const alertLevel = document.getElementById('alertLevel');
+
+        let totalPackets = 0;
+        let totalThreats = 0;
+        let totalBlocked = 0;
+        let currentAlertLevel = 'SAFE';
+
+        // Initialize with some base values
+        if (packetsSeen) packetsSeen.textContent = '0';
+        if (threatsFound) threatsFound.textContent = '0';
+        if (blockRate) blockRate.textContent = '0%';
+        if (alertLevel) alertLevel.textContent = 'SAFE';
+
+        // Update stats every 2-5 seconds
+        setInterval(() => {
+          // Simulate network activity
+          const newPackets = Math.floor(Math.random() * 500) + 100;
+          const newThreats = Math.random() > 0.8 ? Math.floor(Math.random() * 3) + 1 : 0;
+          const newBlocked = newThreats > 0 ? Math.floor(Math.random() * newThreats) + 1 : 0;
+
+          totalPackets += newPackets;
+          totalThreats += newThreats;
+          totalBlocked += newBlocked;
+
+          // Update display with animation
+          if (packetsSeen) {
+            packetsSeen.style.transform = 'scale(1.1)';
+            packetsSeen.textContent = totalPackets.toLocaleString();
+            setTimeout(() => packetsSeen.style.transform = '', 200);
+          }
+
+          if (threatsFound && newThreats > 0) {
+            threatsFound.style.transform = 'scale(1.2)';
+            threatsFound.style.color = '#ff9900';
+            threatsFound.textContent = totalThreats;
+            setTimeout(() => {
+              threatsFound.style.transform = '';
+              threatsFound.style.color = '';
+            }, 500);
+          }
+
+          // Calculate and update block rate
+          if (blockRate) {
+            const rate = totalPackets > 0 ? Math.min(100, Math.floor((totalBlocked / totalPackets) * 100)) : 0;
+            blockRate.textContent = rate + '%';
+
+            if (rate > 80) {
+              blockRate.style.color = '#00ff88';
+            } else if (rate > 50) {
+              blockRate.style.color = '#ff9900';
+            } else {
+              blockRate.style.color = '#ff0055';
+            }
+          }
+
+          // Update alert level based on threat activity
+          if (alertLevel) {
+            let newLevel = 'SAFE';
+            if (totalThreats > 10) {
+              newLevel = 'CRITICAL';
+            } else if (totalThreats > 5) {
+              newLevel = 'WARNING';
+            }
+
+            if (newLevel !== currentAlertLevel) {
+              currentAlertLevel = newLevel;
+              alertLevel.style.animation = 'pulse 0.5s ease-in-out';
+              alertLevel.textContent = newLevel;
+              alertLevel.style.color = newLevel === 'CRITICAL' ? '#ff0055' : newLevel === 'WARNING' ? '#ff9900' : '#00d4ff';
+              setTimeout(() => alertLevel.style.animation = '', 500);
+            }
+          }
+        }, Math.random() * 3000 + 2000); // Random interval between 2-5 seconds
+      })();
+
+      // Keyboard shortcuts for enhanced accessibility
+      (function () {
+        const shortcuts = {
+          'Control+k': () => {
+            // Quick search - focus on detection section
+            document.querySelector('#detection').scrollIntoView({ behavior: 'smooth' });
+            showNotification('🔍 Quick search activated - Detection section highlighted', 'info');
+          },
+          'Control+l': () => {
+            // Quick scan - trigger first sample analysis
+            const firstSample = document.querySelector('.sample-btn');
+            if (firstSample) {
+              firstSample.click();
+              showNotification('⚡ Quick scan initiated', 'success');
+            }
+          },
+          'Control+m': () => {
+            // Toggle AI assistant
+            const assistant = document.getElementById('aiAssistant');
+            if (assistant) {
+              assistant.classList.toggle('hidden');
+              showNotification('🤖 AI Assistant toggled', 'info');
+            }
+          },
+          'Control+s': () => {
+            // Start deep scan
+            const scanBtn = document.querySelector('.scan-btn');
+            if (scanBtn && !scanBtn.disabled) {
+              scanBtn.click();
+              showNotification('🔬 Deep scan started', 'warning');
+            }
+          },
+          'Control+h': () => {
+            // Show help overlay
+            showHelpOverlay();
+          },
+          'Escape': () => {
+            // Close any open overlays
+            const overlays = document.querySelectorAll('.modal, .overlay');
+            overlays.forEach(overlay => {
+              if (overlay.style.display !== 'none') {
+                overlay.style.display = 'none';
+                showNotification('✖ Overlay closed', 'info');
+              }
+            });
+          }
+        };
+
+        function showNotification(message, type = 'info') {
+          // Create notification element
+          const notification = document.createElement('div');
+          notification.className = `notification notification-${type}`;
+          notification.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span>${message}</span>
+            </div>
+          `;
+          notification.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: ${type === 'success' ? 'rgba(0, 255, 136, 0.9)' : type === 'warning' ? 'rgba(255, 153, 0, 0.9)' : 'rgba(0, 212, 255, 0.9)'};
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease-out;
+            backdrop-filter: blur(10px);
+          `;
+        
+          document.body.appendChild(notification);
+
+          // Auto remove after 3 seconds
+          setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => notification.remove(), 300);
+          }, 3000);
+        }
+
+        function showHelpOverlay() {
+          const overlay = document.createElement('div');
+          overlay.className = 'help-overlay';
+          overlay.innerHTML = `
+            <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10001; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);" onclick="this.remove()">
+              <div style="background: linear-gradient(135deg, rgba(10,15,35,0.95), rgba(20,25,45,0.95)); border: 1px solid rgba(0,212,255,0.3); border-radius: 16px; padding: 32px; max-width: 500px; color: white;" onclick="event.stopPropagation()">
+                <h3 style="color: #00d4ff; margin-bottom: 20px; text-align: center;">⌨️ Keyboard Shortcuts</h3>
+                <div style="display: grid; gap: 12px;">
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + K</span>
+                    <span style="color: #8cc9e0;">Quick Search (Detection)</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + L</span>
+                    <span style="color: #8cc9e0;">Quick Scan</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + M</span>
+                    <span style="color: #8cc9e0;">Toggle AI Assistant</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + S</span>
+                    <span style="color: #8cc9e0;">Start Deep Scan</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + H</span>
+                    <span style="color: #8cc9e0;">Show Help</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                    <span>Escape</span>
+                    <span style="color: #8cc9e0;">Close Overlays</span>
+                  </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                  <button style="background: rgba(0,212,255,0.2); border: 1px solid rgba(0,212,255,0.5); color: #00d4ff; padding: 8px 16px; border-radius: 6px; cursor: pointer;" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
+                </div>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(overlay);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+          @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+          }
+        `;
+        document.head.appendChild(style);
+
+        // Listen for keyboard events
+        document.addEventListener('keydown', (e) => {
+          const key = `${e.ctrlKey ? 'Control+' : ''}${e.key.toLowerCase()}`;
+          if (shortcuts[key]) {
+            e.preventDefault();
+            shortcuts[key]();
+          }
+        });
+
+        // Show initial help hint
+        setTimeout(() => {
+          showNotification('💡 Press Ctrl+H for keyboard shortcuts', 'info');
+        }, 5000);
+      })();
+    </script>
+
+    <!-- Firebase Auth for Login/Logout -->
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "[GCP_API_KEY]",  
+        authDomain: "my-safe-net.firebaseapp.com",
+        projectId: "my-safe-net",
+        storageBucket: "my-safe-net.firebasestorage.app",
+        messagingSenderId: "530467858697",
+        appId: "1:530467858697:web:37d409f7c4c2b7ae0b8bd8",
+        measurementId: "G-9WSFSMMZLR"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      // Auth state listener
+      auth.onAuthStateChanged((user) => {
+        const authBtn = document.getElementById('authBtn');
+        const profileIcon = document.getElementById('profileIcon');
+
+        if (authBtn) {
+          if (user) {
+            // User is logged in - show logout button and profile icon
+            authBtn.innerHTML = '🚪 Logout';
+            authBtn.onclick = () => {
+              auth.signOut().then(() => {
+                location.reload();
+              }).catch((error) => {
+                console.error('Logout error:', error);
+              });
+            };
+
+            // Show profile icon
+            if (profileIcon) {
+              profileIcon.style.display = 'flex';
+              // Use display name initial or default
+              const displayName = user.displayName || user.email;
+              const initial = displayName ? displayName.charAt(0).toUpperCase() : '👤';
+              profileIcon.querySelector('span').textContent = initial;
+              profileIcon.title = displayName || 'My Profile';
+            }
+          } else {
+            // User is not logged in - show login button, hide profile icon
+            authBtn.innerHTML = '🔐 Login';
+            authBtn.onclick = () => {
+              location.href = 'login.html';
+            };
+
+            // Hide profile icon
+            if (profileIcon) {
+              profileIcon.style.display = 'none';
+            }
+          }
+        }
+      });
+    </script>
+
+    <!-- Contact Form Email Handler -->
+    <script>
+      // Contact form handler
+      document.getElementById('contactForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const submitBtn = this.querySelector('.submit-button');
+        const formMessage = document.getElementById('formMessage');
+        const originalBtnText = submitBtn.innerHTML;
+
+        // Get form values
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const company = document.getElementById('company').value || 'Not specified';
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+
+        // Show loading state
+        submitBtn.innerHTML = '<span class="loading"></span> Sending...';
+        submitBtn.disabled = true;
+        formMessage.innerHTML = '';
+
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            company,
+            subject,
+            message
+          })
+        })
+          .then(async function (response) {
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              throw new Error(data.error || 'Contact delivery failed');
+            }
+            formMessage.innerHTML = '<div style="color: #00ff88; padding: 12px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 8px;">✓ Message sent successfully! We will get back to you soon.</div>';
+            submitBtn.innerHTML = '✓ Sent!';
+            submitBtn.style.background = 'linear-gradient(135deg, #00ff88, #00cc66)';
+
+            // Reset form
+            document.getElementById('contactForm').reset();
+
+            // Reset button after 3 seconds
+            setTimeout(() => {
+              submitBtn.innerHTML = originalBtnText;
+              submitBtn.disabled = false;
+              submitBtn.style.background = '';
+            }, 3000);
+          })
+          .catch(function (error) {
+            console.error('Email failed:', error);
+            formMessage.innerHTML = '<div style="color: #ff5588; padding: 12px; background: rgba(255,0,85,0.1); border: 1px solid rgba(255,0,85,0.3); border-radius: 8px;">✗ Failed to send message. Please try again or email us directly.</div>';
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+          });
+      });
+    </script>
+    <script src="script.js"></script>
+
+    <!-- Emergency AI Agent Logic -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const agentBtn = document.getElementById('emergencyAgentBtn');
+        const chatWindow = document.getElementById('emergencyChatWindow');
+        const closeBtn = document.getElementById('closeChatBtn');
+        const chatMessages = document.getElementById('chatMessages');
+
+        if (agentBtn && chatWindow && chatMessages) {
+          // Toggle chat window
+          agentBtn.addEventListener('click', () => {
+            chatWindow.classList.toggle('active');
+          });
+
+          closeBtn.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+          });
+
+          // Send message
+          const sendMessage = (text) => {
+            if (!text) return;
+
+            // Add user message
+            appendMessage(text, 'user-message');
+
+            // Show thinking indicator
+            const thinkingId = showThinking();
+
+            // Simulate AI response logic
+            setTimeout(async () => {
+              const response = await generateAIResponse(text);
+              removeThinking(thinkingId);
+              appendMessage(response, 'ai-message');
+            }, 600);
+          };
+
+          const optionBtns = document.querySelectorAll('.chat-option-btn');
+          optionBtns.forEach(btn => {
+            if (btn.id === 'otherOptionBtn') return; // Handled below
+            btn.addEventListener('click', () => {
+              const query = btn.getAttribute('data-query');
+              if (query) sendMessage(query);
+            });
+          });
+
+          const otherOptionBtn = document.getElementById('otherOptionBtn');
+          const chatInputArea = document.getElementById('chatInputArea');
+          const chatOptionsArea = document.getElementById('chatOptionsArea');
+
+          if (otherOptionBtn) {
+            otherOptionBtn.addEventListener('click', () => {
+              chatOptionsArea.style.display = 'none';
+              chatInputArea.style.display = 'flex';
+              aiChatInput.focus();
+            });
+          }
+
+          const aiChatInput = document.getElementById('aiChatInput');
+          const aiChatSubmitBtn = document.getElementById('aiChatSubmitBtn');
+
+          const handleChatInput = () => {
+            if (!aiChatInput) return;
+            const text = aiChatInput.value.trim();
+            if (text) {
+              sendMessage(text);
+              aiChatInput.value = '';
+            }
+          };
+
+          if (aiChatSubmitBtn) {
+            aiChatSubmitBtn.addEventListener('click', handleChatInput);
+          }
+          if (aiChatInput) {
+            aiChatInput.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter') handleChatInput();
+            });
+          }
+
+          function appendMessage(text, className) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${className}`;
+
+            const avatarStr = className === 'user-message' ? '👤' : '🤖';
+            const headerStr = className === 'user-message' ? '' : '<strong style="color:#38bdf8; font-family:monospace; font-size: 0.7rem;">[SYSTEM OVERRIDE] AI_CORE_V2</strong>';
+
+            msgDiv.innerHTML = `
+              <div class="msg-avatar">${avatarStr}</div>
+              <div class="msg-content">
+                ${headerStr}${text}
+              </div>
+            `;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+
+          function showThinking() {
+            const id = 'thinking-' + Date.now();
+            const thinkingDiv = document.createElement('div');
+            thinkingDiv.className = 'message ai-message';
+            thinkingDiv.id = id;
+            thinkingDiv.innerHTML = `
+              <div class="msg-avatar">🤖</div>
+              <div class="msg-content">
+                <strong style="color:#fcd34d; font-family:monospace; font-size: 0.7rem;">[PROCESSING ARTIFACTS]</strong>
+                <div class="thinking-indicator">
+                  <div class="thinking-dot"></div>
+                  <div class="thinking-dot"></div>
+                  <div class="thinking-dot"></div>
+                </div>
+              </div>
+            `;
+            chatMessages.appendChild(thinkingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return id;
+          }
+
+          function removeThinking(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+          }
+
+          async function generateAIResponse(userInput) {
+            const input = userInput.toLowerCase();
+            // Pre-canned logic for fast UI interactions
+            if (input === "suspicious phishing email") {
+              return "<strong>[THREAT: PHISHING]</strong><br><br>I've analyzed this pattern. It might be a scam trying to steal your credentials.<br><br><strong>✓ WHAT TO DO:</strong><br>1. Do not click any links or download attachments.<br>2. Delete the message immediately.<br>3. If you already clicked, change your password right away.";
+            } else if (input === "ransomware activity") {
+              return "<strong>[THREAT: RANSOMWARE OR FRAUD]</strong><br><br>If your files are locked or someone is demanding payment, this is a severe attack.<br><br><strong>✓ WHAT TO DO:</strong><br>1. Disconnect your device from the internet.<br>2. Do not pay the ransom or transfer funds.<br>3. Contact an IT professional immediately.";
+            } else if (input === "fake payment demo") {
+              return "<strong>[THREAT: PAYMENT FRAUD]</strong><br><br>This is a trick to make you send payments.<br><br><strong>✓ WHAT TO DO:</strong><br>1. Stop all transfers.<br>2. Validate directly with your bank.";
+            } else if (input === "malicious link check") {
+              return "<strong>[THREAT: HARMFUL DOMAIN]</strong><br><br>Suspicious URLs often lead to malware or scam sites.<br><br><strong>✓ WHAT TO DO:</strong><br>1. Do not enter any personal information.<br>2. Close the webpage.<br>3. Run a quick antivirus scan on your device just to be safe.";
+            }
+
+            // Real Gemini LLM Engine Placeholder (Reverted to local)
+            return "<strong>[ANALYSIS COMPLETE]</strong><br><br>I cannot definitively identify a specific threat from that pattern without an actively synced LLM Key. <br><br><strong>✓ RECOMMENDATION:</strong><br>If you feel unsafe, close the application or website. Never share your password, OTP, or financial details. Please provide more context if you require a deeper analysis.";
+          }
+        }
+      });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SAFE-NET AI - Documentation" />
+  <title>Documentation - SAFE-NET</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { padding-top: 80px; background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+    .hero-section { padding: 120px 20px; text-align: center; background: linear-gradient(180deg, rgba(0, 212, 255, 0.05) 0%, transparent 100%); }
+    .hero-title { font-size: 3rem; margin-bottom: 20px; color: #fff; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+    .content-section { max-width: 900px; margin: 0 auto; padding: 40px 20px; line-height: 1.8; font-size: 1.1rem; }
+    .doc-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px; padding: 30px; margin-bottom: 30px; }
+    .doc-card h2 { color: #00d4ff; margin-bottom: 15px; font-size: 1.8rem; border-bottom: 1px solid rgba(0,212,255,0.2); padding-bottom: 10px; }
+    .doc-card h3 { color: #fff; margin-top: 25px; margin-bottom: 15px; font-size: 1.3rem; }
+    .doc-card ul { padding-left: 20px; }
+    .doc-card li { margin-bottom: 10px; }
+    code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #00ff88; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0;">
+        <div class="logo">
+          <span class="logo-icon">
+            <svg class="dynamic-shield" viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="navShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00d4ff" /><stop offset="100%" stop-color="#a855f7" /></linearGradient></defs>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="url(#navShieldGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span class="logo-text" style="font-weight: bold; font-size: 1.5rem; color: #fff; margin-left: 10px;"><span class="safe-part" style="color:#00d4ff">Safe</span><span class="net-part">Net</span></span>
+        </div>
+        <div class="nav-links" style="display: flex; gap: 20px;">
+          <a href="index.html" class="nav-link" style="color: #fff; text-decoration: none;">Home</a>
+          <a href="about.html" class="nav-link" style="color: #fff; text-decoration: none;">About</a>
+          <a href="pricing.html" class="nav-link" style="color: #fff; text-decoration: none;">Pricing</a>
+          <a href="documentation.html" class="nav-link active" style="color: #00d4ff; text-decoration: none;">Documentation</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero-section">
+      <div class="container">
+        <h1 class="hero-title">Technical Documentation</h1>
+        <p style="font-size: 1.25rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">Deep dive into the architecture and algorithms powering SAFENET.</p>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <div class="doc-card">
+        <h2>Technical Architecture</h2>
+        <p>SAFENET is divided into three primary decoupled layers:</p>
+        <ul>
+          <li><strong>Edge Layer (<code>ztas-ai-widget.js</code>):</strong> Handles DOM integrity, real-time input monitoring, and state synchronization across the ecosystem.</li>
+          <li><strong>Logic Layer (<code>safe.js</code>):</strong> Orchestrates the 30+ threat categories, URL forensic analysis, and character-level sweep.</li>
+          <li><strong>ML Enrichment Layer (<code>safe.py</code>):</strong> A heavy-duty FastAPI backend running PyTorch-based Vision Transformers and Scikit-Learn classifiers for deep media forensics.</li>
+        </ul>
+      </div>
+
+      <div class="doc-card">
+        <h2>Threat Detection Modules</h2>
+        <h3>Linguistic Threat Detection Engine (ZTAS-NLP)</h3>
+        <ul>
+          <li><strong>Homograph Attack Detection:</strong> Scans for lookalike Unicode characters.</li>
+          <li><strong>Zero-Width Analysis:</strong> Detects invisible steering characters used to bypass URL filters.</li>
+          <li><strong>Urgency & BEC Heuristics:</strong> Identifies linguistic markers of Business Email Compromise.</li>
+        </ul>
+        
+        <h3>Visual Deepfake Detection (EDD_PIXEL_v1.3)</h3>
+        <p>A 7-layer ensemble forensic engine combining Vision Transformers (ViT), Error Level Analysis (ELA), Fast Fourier Transform (FFT) for algorithmic gridding, and Noise Fingerprinting (PRNU).</p>
+      </div>
+
+      <div class="doc-card">
+        <h2>Triple-Lock Security Pipeline</h2>
+        <p>Every scan passes through three distinct Locks:</p>
+        <ol>
+          <li><strong>Technical Lock:</strong> Whitelist checks, HTTPS enforcement, and Safe Browsing API.</li>
+          <li><strong>Forensic Lock:</strong> Heuristic, Spectral, and Entropy analysis (core ZTAS engine).</li>
+          <li><strong>Logic Lock:</strong> LLM-powered synthesis of findings to differentiate False Positives and Stealth Attacks.</li>
+        </ol>
+        <p>Threat scores are exponentially compounded based on cross-vector correlation to flag Advanced Persistent Threats (APTs).</p>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: rgba(10, 15, 30, 0.95); padding: 60px 0 20px 0; border-top: 1px solid rgba(0,212,255,0.2);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 40px; color: #fff;">
+        <div style="flex: 1; min-width: 250px;">
+          <h3 style="color: #00d4ff; font-size: 1.5rem; margin-bottom: 20px;">SAFE-NET</h3>
+          <p style="color: rgba(255,255,255,0.7); line-height: 1.6;">Protecting businesses from cyber threats with advanced AI detection.</p>
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+          <h4 style="color: #fff; margin-bottom: 20px;">Product</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;"><a href="about.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">About</a></li>
+            <li style="margin-bottom: 10px;"><a href="pricing.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Pricing</a></li>
+            <li style="margin-bottom: 10px;"><a href="documentation.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Documentation</a></li>
+          </ul>
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+          <h4 style="color: #fff; margin-bottom: 20px;">Company</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;"><a href="about.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">About Us</a></li>
+            <li style="margin-bottom: 10px;"><a href="blog.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Blog</a></li>
+            <li style="margin-bottom: 10px;"><a href="careers.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Careers</a></li>
+            <li style="margin-bottom: 10px;"><a href="contact.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Contact</a></li>
+          </ul>
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+          <h4 style="color: #fff; margin-bottom: 20px;">Legal</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;"><a href="privacy.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Privacy Policy</a></li>
+            <li style="margin-bottom: 10px;"><a href="terms.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Terms of Service</a></li>
+            <li style="margin-bottom: 10px;"><a href="security.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Security</a></li>
+            <li style="margin-bottom: 10px;"><a href="compliance.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Compliance</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; color: rgba(255,255,255,0.5); font-size: 0.9rem;">
+        <p>&copy; 2026 SAFE-NET. All rights reserved. | Professional Cybersecurity Solutions</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Content Security Policy (CSP) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:8000 http://127.0.0.1:8000 https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://cdn.tesseract.project; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*; connect-src 'self' http://localhost:8000 http://127.0.0.1:8000 http://localhost:3000 http://127.0.0.1:3000 https://*.firebaseio.com https://*.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=()" />
+  <title>SAFE-NET CYBER SCAM PREVENTION SYSTEM</title>
+
+  <!-- ZTAS Security Shield - MUST BE FIRST (Anti-Inspect) -->
+  <script src="security-shield.js"></script>
+
+  <!-- LIBRARIES -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.12.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@1.0.2/dist/face-landmarks-detection.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+
+  <!-- Safe page styles -->
+  <link rel="stylesheet" href="safe.css" />
+
+  <style>
+    /* ================= RESET ================= */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    /* ================= BODY ================= */
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      font-family: Inter, Segoe UI, sans-serif;
+      color: #e5e7eb;
+    }
+
+    /* ================= CARD ================= */
+    .container {
+      width: 100%;
+      max-width: 820px;
+      padding: 40px;
+      border-radius: 28px;
+      background: linear-gradient(145deg, #0b1222, #020617);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, .9),
+        inset 0 0 0 1px rgba(148, 163, 184, .1);
+      position: relative;
+    }
+
+    /* ================= PROFESSIONAL TITLE ================= */
+    .title {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-size: 2.4rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .title-text {
+      background: linear-gradient(90deg, #00d4ff, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-shadow:
+        0 0 8px rgba(0, 212, 255, .35),
+        0 0 16px rgba(168, 85, 247, .25);
+    }
+
+    .title::after {
+      content: "";
+      position: absolute;
+      inset: -30px;
+      background:
+        radial-gradient(circle at center,
+          rgba(95, 179, 255, .25),
+          rgba(159, 168, 255, .18),
+          transparent 70%);
+      filter: blur(42px);
+      z-index: -1;
+    }
+
+    .shield {
+      font-size: 2.7rem;
+      display: inline-block;
+      animation: shieldFloat 3.8s ease-in-out infinite;
+      filter:
+        drop-shadow(0 0 10px rgba(95, 179, 255, .9)) drop-shadow(0 0 22px rgba(95, 179, 255, .4));
+    }
+
+    @keyframes shieldFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-9px);
+      }
+    }
+
+    /* ================= TEXTAREA ================= */
+    textarea {
+      width: 100%;
+      min-height: 170px;
+      padding: 18px;
+      border-radius: 18px;
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, .2);
+      font-size: 1rem;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, .35);
+    }
+
+    /* ================= SELECT ================= */
+    select {
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, .2);
+    }
+
+    /* ================= FILE BUTTON ================= */
+    #fileInput {
+      display: none
+    }
+
+    .custom-file-label {
+      display: block;
+      padding: 16px 20px;
+      margin-top: 14px;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      color: white;
+      font-size: 1.15rem;
+      border-radius: 14px;
+      cursor: pointer;
+      text-align: center;
+      width: 100%;
+      border: none;
+      box-shadow: 0 8px 24px rgba(56, 189, 248, .45);
+      transition: .25s;
+    }
+
+    .custom-file-label:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(99, 102, 241, .7);
+    }
+
+    .custom-file-label:active {
+      transform: scale(.96);
+    }
+
+    /* ================= BUTTONS ================= */
+    .button-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .action-button {
+      flex: 1;
+      padding: 15px 20px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s cubic-bezier(.4, 0, .2, 1);
+      letter-spacing: 0.4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Scan Now button — primary cyan-to-violet gradient */
+    #scanBtn.action-button {
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      color: #fff;
+      box-shadow: 0 6px 0 #1e40af, 0 8px 28px rgba(99, 102, 241, .45);
+    }
+
+    #scanBtn.action-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #1e40af, 0 14px 40px rgba(99, 102, 241, .6);
+    }
+
+    #scanBtn.action-button:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #1e40af, 0 4px 14px rgba(99, 102, 241, .3);
+    }
+
+    /* Preview File button — outlined glass style */
+    #previewBtn.action-button {
+      background: rgba(56, 189, 248, 0.07);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.1);
+    }
+
+    #previewBtn.action-button:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.55);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(56, 189, 248, 0.22);
+    }
+
+    #previewBtn.action-button:active {
+      transform: translateY(2px);
+    }
+
+    /* Forensic scan buttons (deepfake + voice clone) — hidden by default */
+    .forensic-scan-btn {
+      display: none;
+      width: 100%;
+      margin-top: 16px;
+      padding: 16px 28px;
+      border-radius: 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s cubic-bezier(.4, 0, .2, 1);
+      letter-spacing: 0.5px;
+    }
+
+    .forensic-scan-btn.active {
+      display: block;
+    }
+
+    /* Deepfake scan button — purple */
+    .forensic-scan-btn.deepfake-btn {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      color: #fff;
+      box-shadow: 0 6px 0 #4c1d95, 0 8px 26px rgba(168, 85, 247, .4);
+    }
+
+    .forensic-scan-btn.deepfake-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #4c1d95, 0 14px 40px rgba(168, 85, 247, .55);
+    }
+
+    .forensic-scan-btn.deepfake-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #4c1d95, 0 5px 16px rgba(168, 85, 247, .3);
+    }
+
+    /* Voice clone scan button — teal */
+    .forensic-scan-btn.voice-btn {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: #fff;
+      box-shadow: 0 6px 0 #164e63, 0 8px 26px rgba(6, 182, 212, .4);
+    }
+
+    .forensic-scan-btn.voice-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #164e63, 0 14px 40px rgba(6, 182, 212, .55);
+    }
+
+    .forensic-scan-btn.voice-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #164e63, 0 5px 16px rgba(6, 182, 212, .3);
+    }
+
+    /* ================= STATUS ================= */
+    #status {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 18px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .safe {
+      background: #064e3b;
+      color: #6ee7b7
+    }
+
+    .warn {
+      background: #78350f;
+      color: #fde68a
+    }
+
+    .danger {
+      background: #7f1d1d;
+      color: #fca5a5
+    }
+
+    .unknown {
+      background: #1e293b;
+      color: #93c5fd
+    }
+
+    /* ================= OUTPUT ================= */
+    #output {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 16px;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, .2);
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    /* ================= SMART LOADER ================= */
+    .smart-loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .92);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .hidden {
+      display: none
+    }
+
+    .loader-glass {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 20px;
+      padding: 30px;
+      width: 92%;
+      max-width: 380px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+      text-align: center;
+    }
+
+    .ai-ring {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 4px solid rgba(56, 189, 248, .2);
+      border-top-color: #38bdf8;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 18px;
+    }
+
+    .scan-lines {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 12px 0
+    }
+
+    .scan-lines span {
+      width: 6px;
+      height: 18px;
+      background: #38bdf8;
+      border-radius: 3px;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .3
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #334155;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #22d3ee);
+      transition: .4s;
+    }
+
+    .loader-text h3 {
+      color: #e0f2fe;
+      margin-bottom: 6px;
+    }
+
+    /* ================= BACK HOME BUTTON ================= */
+    .back-home {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 16px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .back-home:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateX(-3px);
+    }
+
+    /* Deepfake & Voice Detection Meters */
+    .df-meter,
+    .vc-meter {
+      background: rgba(2, 6, 23, .6);
+      border: 1px solid rgba(148, 163, 184, .08);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .df-label {
+      font-size: .72rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    .df-bar {
+      height: 8px;
+      background: #1e293b;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .df-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      transition: width 1.2s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .df-fill.vc {
+      background: linear-gradient(90deg, #22d3ee, #06b6d4);
+    }
+
+    .df-bar.vc {
+      border-color: rgba(34, 211, 238, .15);
+    }
+
+    .df-val {
+      font-size: .85rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      font-family: monospace;
+    }
+
+    /* Multi-Layer Row */
+    .ml-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(2, 6, 23, .5);
+      border: 1px solid rgba(148, 163, 184, .06);
+      border-radius: 12px;
+    }
+
+    .ml-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .ml-info {
+      flex: 1;
+    }
+
+    .ml-name {
+      font-size: .8rem;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .ml-desc {
+      font-size: .7rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .ml-bar-wrap {
+      width: 100px;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .ml-bar-inner {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .ml-badge {
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ============ ZTAS VERDICT CARD ============ */
+    .verdict-card {
+      display: none;
+      margin-top: 18px;
+      background: linear-gradient(145deg, #0f172a, #020617);
+      border: 1px solid rgba(56, 189, 248, .15);
+      border-radius: 18px;
+      padding: 24px;
+      animation: fadeSlideIn .5s ease;
+    }
+
+    .verdict-card.active {
+      display: block;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .vc-decision {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .vc-decision-badge {
+      font-size: 1.3rem;
+      font-weight: 800;
+      padding: 8px 22px;
+      border-radius: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .vc-decision-badge.block {
+      background: rgba(239, 68, 68, .2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, .4);
+    }
+
+    .vc-decision-badge.isolate {
+      background: rgba(245, 158, 11, .2);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, .4);
+    }
+
+    .vc-decision-badge.safe {
+      background: rgba(34, 197, 94, .2);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, .4);
+    }
+
+    .vc-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .vc-threat-type {
+      font-size: .95rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .vc-confidence-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .vc-confidence-label {
+      font-size: .8rem;
+      color: #94a3b8;
+    }
+
+    .vc-confidence-bar {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, .06);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .vc-confidence-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 1.2s ease;
+    }
+
+    .vc-confidence-val {
+      font-size: .85rem;
+      font-weight: 700;
+      color: #7dd3fc;
+      min-width: 38px;
+      text-align: right;
+    }
+
+    .vc-report-btn {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, .2);
+      background: linear-gradient(135deg, rgba(56, 189, 248, .08), rgba(168, 85, 247, .08));
+      color: #7dd3fc;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .3s;
+      letter-spacing: .5px;
+    }
+
+    .vc-report-btn:hover {
+      background: linear-gradient(135deg, rgba(56, 189, 248, .18), rgba(168, 85, 247, .18));
+      border-color: rgba(56, 189, 248, .4);
+      transform: translateY(-1px);
+    }
+
+    .vc-report-btn .arrow {
+      transition: transform .3s;
+      display: inline-block;
+      margin-left: 6px;
+    }
+
+    .vc-report-btn.open .arrow {
+      transform: rotate(180deg);
+    }
+
+    .vc-report-body {
+      display: none;
+      margin-top: 14px;
+      padding: 20px;
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, .1);
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, .5);
+      color: #cbd5e1;
+      white-space: normal;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+
+    .vc-report-body.open {
+      display: block;
+      animation: fadeSlideIn .3s ease;
+    }
+
+    /* Forensic Heatmaps Dashboard */
+    .forensic-dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(15, 23, 42, 0.4);
+      border-radius: 12px;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+    }
+
+    .heatmap-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .heatmap-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #a855f7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .heatmap-img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      background: #000;
+      aspect-ratio: 1/1;
+      object-fit: contain;
+    }
+
+    .heatmap-desc {
+      font-size: 0.65rem;
+      color: #64748b;
+      line-height: 1.3;
+    }
+
+    /* Structured ZTAS Report Styles */
+    .ztas-formatted-report {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .report-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #7dd3fc;
+      margin-bottom: 8px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed rgba(56, 189, 248, .2);
+      letter-spacing: 0.5px;
+    }
+
+    .metric-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .metric-label {
+      color: #94a3b8;
+      font-weight: 600;
+      width: 140px;
+    }
+
+    .metric-badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-block {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-isolate {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-safe {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .highlight-type {
+      color: #e2e8f0;
+      font-weight: 600;
+      padding: 2px 8px;
+      background: rgba(148, 163, 184, 0.1);
+      border-radius: 4px;
+    }
+
+    .font-mono {
+      font-family: 'Courier New', monospace;
+      color: #38bdf8;
+      font-weight: bold;
+    }
+
+    .section-title {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title i {
+      color: #38bdf8;
+    }
+
+    .sub-section-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .evidence-box {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(51, 65, 85, 0.5);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .analysis-box {
+      background: rgba(147, 51, 234, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      border-left: 3px solid #a855f7;
+      border-radius: 8px;
+      padding: 16px;
+      color: #e2e8f0;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .lock-item {
+      font-size: 0.85rem;
+      color: #e2e8f0;
+    }
+
+    .lock-item strong {
+      color: #94a3b8;
+    }
+
+    .finding-list,
+    .action-list {
+      margin: 0;
+      padding-left: 0;
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .finding-list li,
+    .action-list li {
+      font-size: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(2, 6, 23, 0.4);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border-left: 2px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .finding-list li {
+      border-left-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .action-list li {
+      border-left-color: rgba(6, 182, 212, 0.4);
+    }
+
+    .finding-list li i,
+    .action-list li i {
+      margin-top: 3px;
+      font-size: 0.8rem;
+    }
+
+    .tag {
+      background: rgba(239, 68, 68, 0.1);
+      color: #fca5a5;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-right: 6px;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .text-warn {
+      color: #f59e0b;
+    }
+
+    .text-cyan {
+      color: #06b6d4;
+    }
+
+    .prop-row {
+      font-size: 0.8rem;
+      padding-left: 24px;
+    }
+
+    .prop-key {
+      color: #94a3b8;
+    }
+
+    .prop-val {
+      color: #e2e8f0;
+      font-family: monospace;
+    }
+
+    .raw-line {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    /* ============ FORENSIC UPLOAD ZONES ============ */
+    .forensic-upload-zone {
+      display: none;
+      margin-top: 16px;
+      border-radius: 20px;
+      padding: 30px 24px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .forensic-upload-zone.active {
+      display: block;
+    }
+
+    /* Deepfake (purple) */
+    .forensic-upload-zone.deepfake-zone {
+      background: linear-gradient(145deg, #1a0a2e, #0d001a);
+      border: 2px dashed rgba(168, 85, 247, .35);
+    }
+
+    .forensic-upload-zone.deepfake-zone:hover,
+    .forensic-upload-zone.deepfake-zone.dragover {
+      border-color: #a855f7;
+      background: linear-gradient(145deg, #2d1150, #1a0a2e);
+      box-shadow: 0 0 40px rgba(168, 85, 247, .15), inset 0 0 60px rgba(168, 85, 247, .05);
+    }
+
+    /* Voice (teal) */
+    .forensic-upload-zone.voice-zone {
+      background: linear-gradient(145deg, #0a1628, #001025);
+      border: 2px dashed rgba(34, 211, 238, .3);
+    }
+
+    .forensic-upload-zone.voice-zone:hover,
+    .forensic-upload-zone.voice-zone.dragover {
+      border-color: #22d3ee;
+      background: linear-gradient(145deg, #0d2035, #0a1628);
+      box-shadow: 0 0 40px rgba(34, 211, 238, .12), inset 0 0 60px rgba(34, 211, 238, .04);
+    }
+
+    .fuz-icon {
+      font-size: 3.2rem;
+      margin-bottom: 10px;
+      display: block;
+      opacity: .85;
+      animation: fuzFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes fuzFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .fuz-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .deepfake-zone .fuz-title {
+      color: #c084fc;
+    }
+
+    .voice-zone .fuz-title {
+      color: #22d3ee;
+    }
+
+    .fuz-subtitle {
+      font-size: .85rem;
+      color: #64748b;
+      margin-bottom: 14px;
+    }
+
+    .fuz-formats {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .fuz-tag {
+      font-size: .7rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .deepfake-zone .fuz-tag {
+      background: rgba(168, 85, 247, .12);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, .2);
+    }
+
+    .voice-zone .fuz-tag {
+      background: rgba(34, 211, 238, .1);
+      color: #22d3ee;
+      border: 1px solid rgba(34, 211, 238, .2);
+    }
+
+    .fuz-browse-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: .95rem;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .deepfake-zone .fuz-browse-btn {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      color: #fff;
+      box-shadow: 0 6px 0 #4c1d95, 0 8px 24px rgba(168, 85, 247, .35);
+    }
+
+    .deepfake-zone .fuz-browse-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #4c1d95, 0 14px 36px rgba(168, 85, 247, .5);
+    }
+    
+    .deepfake-zone .fuz-browse-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #4c1d95, 0 5px 15px rgba(168, 85, 247, .3);
+    }
+
+    .voice-zone .fuz-browse-btn {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: #fff;
+      box-shadow: 0 6px 0 #164e63, 0 8px 24px rgba(6, 182, 212, .35);
+    }
+
+    .voice-zone .fuz-browse-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #164e63, 0 14px 36px rgba(6, 182, 212, .5);
+    }
+    
+    .voice-zone .fuz-browse-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #164e63, 0 5px 15px rgba(6, 182, 212, .3);
+    }
+
+    /* Preview area inside upload zone */
+    .fuz-preview {
+      margin-top: 16px;
+      border-radius: 14px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .fuz-preview.active {
+      display: block;
+    }
+
+    .fuz-preview img {
+      max-width: 100%;
+      max-height: 220px;
+      border-radius: 12px;
+      border: 2px solid rgba(168, 85, 247, .25);
+      object-fit: contain;
+    }
+
+    .fuz-preview audio {
+      width: 100%;
+      margin-top: 8px;
+      border-radius: 10px;
+    }
+
+    .fuz-filename {
+      margin-top: 10px;
+      font-size: .8rem;
+      font-weight: 600;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .fuz-filename .fuz-remove {
+      color: #ef4444;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      background: rgba(239, 68, 68, .1);
+      border: 1px solid rgba(239, 68, 68, .2);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+    }
+
+    .fuz-filename .fuz-remove:hover {
+      background: rgba(239, 68, 68, .25);
+    }
+
+    /* ================= HISTORY STYLES ================= */
+    .history-btn {
+      left: auto !important;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .history-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .history-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .history-content {
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      background: #0f172a;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      transform: scale(0.95);
+      transition: all 0.3s ease;
+    }
+
+    .history-modal.active .history-content {
+      transform: scale(1);
+    }
+
+    .history-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(2, 6, 23, 0.5);
+    }
+
+    .history-header>div {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .history-header h3 {
+      font-size: 1.2rem;
+      color: #e2e8f0;
+      margin: 0;
+    }
+
+    .history-list {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .clear-btn,
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-weight: 600;
+      transition: color 0.2s;
+      padding: 5px 10px;
+    }
+
+    .clear-btn:hover {
+      color: #ef4444;
+    }
+
+    .close-btn {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      color: #fff;
+    }
+  </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+</head>
+
+<body><a href="index.html" class="back-home">&#8592;
+    Back to Home</a><button id="historyBtn" class="back-home history-btn" style="display: none;">&#128214;
+    History</button>
+  <div class="history-modal" id="historyModal">
+    <div class="history-content">
+      <div class="history-header">
+        <h3>&#128214;
+          Scan History</h3>
+        <div><button id="clearHistoryBtn" class="clear-btn">Clear</button><button id="closeHistoryBtn"
+            class="close-btn">&times;
+          </button></div>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+  </div>
+  <div class="container">
+    <h2 class="title">
+      <span class="shield">
+        <svg class="dynamic-shield" viewBox="0 0 24 24" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="titleShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00d4ff" />
+              <stop offset="100%" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="rgba(0,212,255,0.05)"
+            stroke="url(#titleShieldGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      <span class="title-text">SafeNet &mdash; CYBER SCAM PREVENTION SYSTEM</span>
+    </h2>
+    <textarea id="input" placeholder="Paste Your Message, Email, URL, or Link"></textarea><label
+      style="margin-top:10px;font-size:1.1rem;">&#x1F50D;
+      Select Scan Type:</label><select id="scanType">
+      <option value="auto">&#x1F4CC;
+        Auto Detect (Text/Image)</option>
+      <option value="text">&#x2709;
+        Text / Email Only</option>
+      <option value="url">&#x1F517;
+        URL Only</option>
+      <option value="image">&#x1F5BC;
+        Image Only</option>
+      <option value="deepfake">&#x1F3AD;
+        Deepfake Image Detection</option>
+      <option value="voiceclone">&#x1F399;
+        AI Voice Clone Detection</option>
+    </select>
+    <!-- Default file/text controls (hidden in forensic mode) -->
+    <div id="defaultControls"><input type="file" id="fileInput"
+        accept="image/*,.txt,.eml,text/plain,audio/*,.wav,.mp3,.ogg,.m4a,.flac,.webm" /><label for="fileInput"
+        class="custom-file-label">&#x1F4C1;
+        Choose File (Image / Audio / Text)</label>
+      <div class="button-group"><button id="scanBtn" class="action-button">&#x26A1;
+          Scan Now</button><button id="previewBtn" class="action-button">&#x1F441;
+          Preview File</button></div>
+    </div>
+    <!--=======DEEPFAKE INTERACTIVE UPLOAD ZONE=======-->
+    <div class="forensic-upload-zone deepfake-zone" id="deepfakeUploadZone"><input type="file" id="dfFileInput"
+        accept="image/*" style="display:none" /><span class="fuz-icon">&#x1F3AD;
+      </span>
+      <div class="fuz-title">Deepfake Forensic Scanner</div>
+      <div class="fuz-subtitle">Drag &amp;
+        drop an image here,
+        or click to browse</div>
+      <div class="fuz-formats"><span class="fuz-tag">JPG</span><span class="fuz-tag">PNG</span><span
+          class="fuz-tag">WEBP</span><span class="fuz-tag">BMP</span><span class="fuz-tag">GIF</span></div><button
+        class="fuz-browse-btn" id="dfBrowseBtn">Browse Image Files</button>
+      <div class="fuz-preview" id="dfPreview"><img id="dfPreviewImg" alt="Preview" />
+        <div class="fuz-filename"><span id="dfFileName"></span><span class="fuz-remove" id="dfRemoveFile"
+            title="Remove">&times;
+          </span></div>
+      </div>
+    </div>
+    <!--=======VOICE CLONE INTERACTIVE UPLOAD ZONE=======-->
+    <div class="forensic-upload-zone voice-zone" id="voiceUploadZone"><input type="file" id="vcFileInput"
+        accept="audio/*,.wav,.mp3,.ogg,.m4a,.flac,.webm" style="display:none" /><span class="fuz-icon">&#x1F399;
+      </span>
+      <div class="fuz-title">AI Voice Clone Analyzer</div>
+      <div class="fuz-subtitle">Drag &amp;
+        drop an audio file here,
+        or click to browse</div>
+      <div class="fuz-formats"><span class="fuz-tag">WAV</span><span class="fuz-tag">MP3</span><span
+          class="fuz-tag">OGG</span><span class="fuz-tag">M4A</span><span class="fuz-tag">FLAC</span><span
+          class="fuz-tag">WEBM</span></div><button class="fuz-browse-btn" id="vcBrowseBtn">Browse Audio
+        Files</button>
+      <div class="fuz-preview" id="vcPreview"><audio id="vcPreviewAudio" controls></audio>
+        <div class="fuz-filename"><span id="vcFileName"></span><span class="fuz-remove" id="vcRemoveFile"
+            title="Remove">&times;
+          </span></div>
+      </div>
+    </div>
+    <!-- Forensic Scan Buttons (mode-specific) --><button class="forensic-scan-btn deepfake-btn"
+      id="dfScanBtn">&#x1F52C;
+      Run Deepfake Forensic Analysis</button><button class="forensic-scan-btn voice-btn" id="vcScanBtn">&#x1F50A;
+      Run Voice Clone Analysis</button>
+    <div id="status" class="unknown">Waiting for input...</div>
+    <!-- Multi-Layer Detection Results Panel -->
+    <div id="multiLayerPanel" style="display:none; margin-top:18px;">
+      <div
+        style="background:linear-gradient(145deg,#0f172a,#020617); border:1px solid rgba(56,189,248,.15); border-radius:18px; padding:20px;">
+        <h3 style="color:#7dd3fc; margin-bottom:14px; font-size:1.1rem;">&#x1F9EC;
+          ZTAS Multi-Layer Zero-Trust Engine </h3>
+        <div id="layerResults" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+    </div>
+    <!-- Deepfake Detection Results Panel -->
+    <div id="deepfakePanel" style="display:none; margin-top:18px;">
+      <div
+        style="background:linear-gradient(145deg,#1a0a2e,#0d001a); border:1px solid rgba(168,85,247,.2); border-radius:18px; padding:22px;">
+        <h3 style="color:#c084fc; margin-bottom:16px; font-size:1.15rem;">&#x1F3AD;
+          Deepfake Forensic Analysis</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div class="df-meter"><span class="df-label">GAN Artifact Score</span>
+            <div class="df-bar">
+              <div class="df-fill" id="dfGanFill"></div>
+            </div><span class="df-val" id="dfGanVal">&mdash;
+            </span>
+          </div>
+          <div class="df-meter"><span class="df-label">Face Warp Detection</span>
+            <div class="df-bar">
+              <div class="df-fill" id="dfFaceFill"></div>
+            </div><span class="df-val" id="dfFaceVal">&mdash;
+            </span>
+          </div>
+          <div class="df-meter"><span class="df-label">Metadata Integrity</span>
+            <div class="df-bar">
+              <div class="df-fill" id="dfMetaFill"></div>
+            </div><span class="df-val" id="dfMetaVal">&mdash;
+            </span>
+          </div>
+          <div class="df-meter"><span class="df-label">Noise Pattern Analysis</span>
+            <div class="df-bar">
+              <div class="df-fill" id="dfNoiseFill"></div>
+            </div><span class="df-val" id="dfNoiseVal">&mdash;
+            </span>
+          </div>
+        </div>
+        <div id="dfVerdict"
+          style="text-align:center; padding:14px; border-radius:12px; font-weight:700; font-size:1.1rem;">
+        </div>
+        <pre id="dfDetails"
+          style="margin-top:12px; padding:12px; background:#020617; border-radius:10px; border:1px solid rgba(168,85,247,.15); font-size:.85rem; max-height:180px; overflow:auto; white-space:pre-wrap;"></pre>
+      </div>
+    </div>
+    <!-- Voice Clone Detection Results Panel -->
+    <div id="voicePanel" style="display:none; margin-top:18px;">
+      <div
+        style="background:linear-gradient(145deg,#0a1628,#001025); border:1px solid rgba(34,211,238,.2); border-radius:18px; padding:22px;">
+        <h3 style="color:#22d3ee; margin-bottom:16px; font-size:1.15rem;">&#x1F399;
+          AI Voice Clone Analysis</h3><canvas id="waveformCanvas" width="740" height="100"
+          style="width:100%; border-radius:10px; background:#020617; border:1px solid rgba(34,211,238,.1); margin-bottom:14px;"></canvas>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div class="vc-meter"><span class="df-label">Spectral Consistency</span>
+            <div class="df-bar vc">
+              <div class="df-fill vc" id="vcSpectralFill"></div>
+            </div><span class="df-val" id="vcSpectralVal">&mdash;
+            </span>
+          </div>
+          <div class="vc-meter"><span class="df-label">Pitch Stability</span>
+            <div class="df-bar vc">
+              <div class="df-fill vc" id="vcPitchFill"></div>
+            </div><span class="df-val" id="vcPitchVal">&mdash;
+            </span>
+          </div>
+          <div class="vc-meter"><span class="df-label">Breathing Pattern</span>
+            <div class="df-bar vc">
+              <div class="df-fill vc" id="vcBreathFill"></div>
+            </div><span class="df-val" id="vcBreathVal">&mdash;
+            </span>
+          </div>
+          <div class="vc-meter"><span class="df-label">Micro-Tremor Analysis</span>
+            <div class="df-bar vc">
+              <div class="df-fill vc" id="vcTremorFill"></div>
+            </div><span class="df-val" id="vcTremorVal">&mdash;
+            </span>
+          </div>
+        </div>
+        <div id="vcVerdict"
+          style="text-align:center; padding:14px; border-radius:12px; font-weight:700; font-size:1.1rem;">
+        </div>
+        <pre id="vcDetails"
+          style="margin-top:12px; padding:12px; background:#020617; border-radius:10px; border:1px solid rgba(34,211,238,.15); font-size:.85rem; max-height:180px; overflow:auto; white-space:pre-wrap;"></pre>
+      </div>
+    </div>
+    <!-- ZTAS Verdict Card -->
+    <div id="verdictCard" class="verdict-card">
+      <div class="vc-decision"><span id="vcDecisionBadge" class="vc-decision-badge block">BLOCK</span>
+        <div class="vc-meta">
+          <div class="vc-threat-type" id="vcThreatType">Analyzing...</div>
+          <div class="vc-confidence-wrap"><span class="vc-confidence-label">Confidence:</span>
+            <div class="vc-confidence-bar">
+              <div class="vc-confidence-fill" id="vcConfidenceFill" style="width:0%; background:#ef4444;"></div>
+            </div><span class="vc-confidence-val" id="vcConfidenceVal">0%</span>
+          </div>
+        </div>
+      </div><button class="vc-report-btn" id="vcReportBtn"
+        onclick="document.getElementById('vcReportBody').classList.toggle('open'); this.classList.toggle('open');">&#x1F4CB;
+        View Full Evidence Report <span class="arrow">&#x25BC;
+        </span></button>
+      <div class="vc-report-body" id="vcReportBody">
+        <pre id="output"
+          style="margin:0; padding:0; background:transparent; border:none; font-size:inherit; color:inherit; white-space:pre-wrap;"></pre>
+      </div>
+    </div>
+  </div>
+  <div id="smartLoader" class="smart-loader hidden">
+    <div class="loader-glass">
+      <div class="ai-ring"></div>
+      <div class="scan-lines"><span></span><span></span><span></span></div>
+      <div class="loader-text">
+        <h3 id="loaderMain">Loading</h3>
+        <p id="loaderSub">Please wait...</p>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="smartProgress"></div>
+      </div>
+    </div>
+  </div>
+  <script src="safe-detection.js"></script>
+  <script src="safe.js?v=1.1"></script>
+  <script src="ztas-ai-widget.js?v=1.1"></script>
+  <script> // ======= FORENSIC UPLOAD ZONE CONTROLLER =======
+
+    (function () {
+      var scanTypeEl = document.getElementById('scanType');
+      var defaultControls = document.getElementById('defaultControls');
+      var inputArea = document.getElementById('input');
+      var dfZone = document.getElementById('deepfakeUploadZone');
+      var vcZone = document.getElementById('voiceUploadZone');
+      var dfScanBtn = document.getElementById('dfScanBtn');
+      var vcScanBtn = document.getElementById('vcScanBtn');
+      var dfFileInput = document.getElementById('dfFileInput');
+      var vcFileInput = document.getElementById('vcFileInput');
+      var dfPreview = document.getElementById('dfPreview');
+      var vcPreview = document.getElementById('vcPreview');
+      var dfPreviewImg = document.getElementById('dfPreviewImg');
+      var vcPreviewAudio = document.getElementById('vcPreviewAudio');
+      var dfFileName = document.getElementById('dfFileName');
+      var vcFileName = document.getElementById('vcFileName');
+      var mainFileInput = document.getElementById('fileInput');
+
+      var forensicFile = null; // file selected in forensic zones
+
+      // --- MODE SWITCHING ---
+      function switchMode(mode) {
+        // Reset forensic zones
+        dfZone.classList.remove('active');
+        vcZone.classList.remove('active');
+        dfScanBtn.classList.remove('active');
+        vcScanBtn.classList.remove('active');
+
+        if (mode === 'deepfake') {
+          defaultControls.style.display = 'none';
+          inputArea.style.display = 'none';
+          dfZone.classList.add('active');
+          dfScanBtn.classList.add('active');
+        }
+
+        else if (mode === 'voiceclone') {
+          defaultControls.style.display = 'none';
+          inputArea.style.display = 'none';
+          vcZone.classList.add('active');
+          vcScanBtn.classList.add('active');
+        }
+
+        else {
+          defaultControls.style.display = '';
+          inputArea.style.display = '';
+        }
+      }
+
+      scanTypeEl.addEventListener('change', function () {
+        switchMode(this.value);
+      });
+
+      // --- DRAG & DROP HELPERS ---
+      function setupDragDrop(zone, fileInputEl, onFile) {
+        zone.addEventListener('dragover', function (e) {
+          e.preventDefault(); e.stopPropagation(); zone.classList.add('dragover');
+        });
+
+        zone.addEventListener('dragleave', function (e) {
+          e.preventDefault(); e.stopPropagation(); zone.classList.remove('dragover');
+        });
+
+        zone.addEventListener('drop', function (e) {
+          e.preventDefault(); e.stopPropagation(); zone.classList.remove('dragover');
+
+          if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            onFile(e.dataTransfer.files[0]);
+          }
+        });
+
+        // Click on zone (but not on buttons/preview) triggers file input
+        zone.addEventListener('click', function (e) {
+          if (e.target.closest('.fuz-browse-btn') || e.target.closest('.fuz-preview') || e.target.closest('.fuz-remove')) return;
+          fileInputEl.click();
+        });
+      }
+
+      // --- DEEPFAKE: file selection & preview ---
+      function handleDfFile(file) {
+        if (!file || !file.type.startsWith('image/')) {
+          alert('Please select a valid image file (JPG, PNG, WEBP, BMP, GIF).');
+          return;
+        }
+
+        forensicFile = file;
+        dfPreviewImg.src = URL.createObjectURL(file);
+        dfFileName.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+        dfPreview.classList.add('active');
+        // Sync to main fileInput (DataTransfer trick)
+        syncToMainInput(file);
+      }
+
+      document.getElementById('dfBrowseBtn').addEventListener('click', function (e) {
+        e.stopPropagation();
+        dfFileInput.click();
+      });
+
+      dfFileInput.addEventListener('change', function () {
+        if (this.files && this.files[0]) handleDfFile(this.files[0]);
+      });
+
+      document.getElementById('dfRemoveFile').addEventListener('click', function (e) {
+        e.stopPropagation();
+        forensicFile = null;
+        dfPreview.classList.remove('active');
+        dfPreviewImg.src = '';
+        dfFileName.textContent = '';
+        dfFileInput.value = '';
+      });
+      setupDragDrop(dfZone, dfFileInput, handleDfFile);
+
+      // --- VOICE CLONE: file selection & preview ---
+      function handleVcFile(file) {
+        if (!file.type.startsWith('audio/') && !file.name.match(/\.(wav|mp3|ogg|m4a|flac|webm)$/i)) {
+          alert('Please select a valid audio file (WAV, MP3, OGG, M4A, FLAC, WEBM).');
+          return;
+        }
+
+        forensicFile = file;
+        vcPreviewAudio.src = URL.createObjectURL(file);
+        vcFileName.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+        vcPreview.classList.add('active');
+        syncToMainInput(file);
+      }
+
+      document.getElementById('vcBrowseBtn').addEventListener('click', function (e) {
+        e.stopPropagation();
+        vcFileInput.click();
+      });
+
+      vcFileInput.addEventListener('change', function () {
+        if (this.files && this.files[0]) handleVcFile(this.files[0]);
+      });
+
+      document.getElementById('vcRemoveFile').addEventListener('click', function (e) {
+        e.stopPropagation();
+        forensicFile = null;
+        vcPreview.classList.remove('active');
+        vcPreviewAudio.src = '';
+        vcFileName.textContent = '';
+        vcFileInput.value = '';
+      });
+      setupDragDrop(vcZone, vcFileInput, handleVcFile);
+
+      // --- Sync file to main fileInput so existing scan code picks it up ---
+      function syncToMainInput(file) {
+        try {
+          var dt = new DataTransfer();
+          dt.items.add(file);
+          mainFileInput.files = dt.files;
+        }
+
+        catch (ex) {
+          /* older browsers may not support DataTransfer */
+        }
+      }
+
+      // --- FORENSIC SCAN BUTTON HANDLERS ---
+      var statusEl = document.getElementById('status');
+      var outputEl = document.getElementById('output');
+      var smartLoader = document.getElementById('smartLoader');
+      var loaderMain = document.getElementById('loaderMain');
+      var loaderSub = document.getElementById('loaderSub');
+      var smartProgress = document.getElementById('smartProgress');
+
+      function showL(t, s, p) {
+        smartLoader.style.display = 'flex'; loaderMain.textContent = t; loaderSub.textContent = s; smartProgress.style.width = p + '%';
+      }
+
+      function updateL(p, s) {
+        smartProgress.style.width = p + '%'; if (s) loaderSub.textContent = s;
+      }
+
+      function hideL() {
+        smartProgress.style.width = '100%'; setTimeout(function () {
+          smartLoader.style.display = 'none';
+        }
+
+          , 300);
+      }
+
+      function hideAllPanels() {
+        document.getElementById('deepfakePanel').style.display = 'none';
+        document.getElementById('voicePanel').style.display = 'none';
+        document.getElementById('multiLayerPanel').style.display = 'none';
+      }
+
+      function setMeter(fillId, valId, score) {
+        var fill = document.getElementById(fillId);
+        var val = document.getElementById(valId);
+
+        if (fill) setTimeout(function () {
+          fill.style.width = score + '%';
+        }
+
+          , 100);
+        if (val) val.textContent = score + '/100';
+      }
+
+      // DEEPFAKE SCAN
+      dfScanBtn.addEventListener('click', async function () {
+        hideAllPanels();
+        var file = forensicFile || (mainFileInput.files && mainFileInput.files[0]);
+
+        if (!file) {
+          statusEl.className = 'warn'; statusEl.textContent = 'Please upload an image first using the zone above'; return;
+        }
+
+        if (!file.type.startsWith('image/')) {
+          statusEl.className = 'warn'; statusEl.textContent = 'Please select a valid image file'; return;
+        }
+
+        showL('Deepfake Forensics', 'Initializing ZTAS Forensic Pipeline...', 5);
+
+        try {
+          var result = await analyzeDeepfake(file, (pct, label) => {
+            updateL(pct, label);
+          });
+
+          hideL();
+
+          // Populate the meters (using top layers or combined)
+          setMeter('dfGanFill', 'dfGanVal', result.layers[1]?.score || 0); // ELA
+          setMeter('dfFaceFill', 'dfFaceVal', result.layers[2]?.score || 0); // Smoothness
+          setMeter('dfMetaFill', 'dfMetaVal', result.layers[0]?.score || 0); // Metadata
+          setMeter('dfNoiseFill', 'dfNoiseVal', result.layers[3]?.score || 0); // PRNU Noise
+
+          var vEl = document.getElementById('dfVerdict');
+          vEl.textContent = result.verdict;
+          vEl.style.background = result.verdictClass === 'danger' ? 'rgba(127,29,29,.6)' : result.verdictClass === 'warn' ? 'rgba(120,53,15,.5)' : 'rgba(6,78,59,.5)';
+          vEl.style.color = result.verdictClass === 'danger' ? '#fca5a5' : result.verdictClass === 'warn' ? '#fde68a' : '#6ee7b7';
+
+          document.getElementById('dfDetails').textContent = result.report;
+          document.getElementById('deepfakePanel').style.display = 'block';
+
+          statusEl.className = result.verdictClass;
+          statusEl.textContent = result.verdict + ' - Combined Score: ' + result.combined + '/100';
+          outputEl.textContent = result.details;
+
+          renderMultiLayerResults([{
+            icon: 'ART', name: 'GAN Artifact Detection', desc: 'Color band noise and unnatural transitions', score: result.ganScore
+          }
+
+            ,
+          {
+            icon: 'FACE', name: 'Face Warp Forensics', desc: 'Edge inconsistency near facial regions', score: result.faceWarpScore
+          }
+
+            ,
+          {
+            icon: 'META', name: 'Metadata Integrity Check', desc: 'EXIF data, dimensions and compression', score: result.metaScore
+          }
+
+            ,
+          {
+            icon: 'NOISE', name: 'Noise Frequency Analysis', desc: 'Spatial noise variance and smoothness', score: result.noiseScore
+          }
+
+            ,
+          {
+            icon: 'FINAL', name: 'Combined Neural Verdict', desc: 'Weighted multi-signal deepfake probability', score: result.combined
+          }
+
+          ]);
+        }
+
+        catch (err) {
+          hideL(); statusEl.className = 'danger'; statusEl.textContent = 'ERROR: ' + err.message;
+        }
+      });
+
+      // VOICE CLONE SCAN
+      vcScanBtn.addEventListener('click', async function () {
+        hideAllPanels();
+        var file = forensicFile || (mainFileInput.files && mainFileInput.files[0]);
+
+        if (!file) {
+          statusEl.className = 'warn'; statusEl.textContent = 'Please upload an audio file first using the zone above'; return;
+        }
+
+        if (!file.type.startsWith('audio/') && !file.name.match(/\.(wav|mp3|ogg|m4a|flac|webm)$/i)) {
+          statusEl.className = 'warn'; statusEl.textContent = 'Please select a valid audio file'; return;
+        }
+
+        showL('Voice Clone Forensics', 'Decoding audio signal...', 10);
+
+        await new Promise(function (r) {
+          setTimeout(r, 500);
+        }); updateL(25, 'Running spectral consistency analysis...');
+
+        await new Promise(function (r) {
+          setTimeout(r, 500);
+        }); updateL(45, 'Analyzing pitch stability patterns...');
+
+        await new Promise(function (r) {
+          setTimeout(r, 400);
+        }); updateL(60, 'Detecting breathing signatures...');
+
+        try {
+          var result2 = await analyzeVoiceClone(file);
+
+          updateL(80, 'Computing micro-tremor jitter...'); await new Promise(function (r) {
+            setTimeout(r, 400);
+          });
+
+          updateL(95, 'Rendering waveform and report...'); await new Promise(function (r) {
+            setTimeout(r, 300);
+          }); hideL();
+          setMeter('vcSpectralFill', 'vcSpectralVal', result2.spectralScore);
+          setMeter('vcPitchFill', 'vcPitchVal', result2.pitchScore);
+          setMeter('vcBreathFill', 'vcBreathVal', result2.breathScore);
+          setMeter('vcTremorFill', 'vcTremorVal', result2.tremorScore);
+          var vEl2 = document.getElementById('vcVerdict');
+          vEl2.textContent = result2.verdict;
+          vEl2.style.background = result2.verdictClass === 'danger' ? 'rgba(127,29,29,.6)' : result2.verdictClass === 'warn' ? 'rgba(120,53,15,.5)' : 'rgba(6,78,59,.5)';
+          vEl2.style.color = result2.verdictClass === 'danger' ? '#fca5a5' : result2.verdictClass === 'warn' ? '#fde68a' : '#6ee7b7';
+          document.getElementById('vcDetails').textContent = result2.details;
+          document.getElementById('voicePanel').style.display = 'block';
+          if (result2.waveformData) drawWaveform('waveformCanvas', result2.waveformData, result2.verdictClass);
+          statusEl.className = result2.verdictClass;
+          statusEl.textContent = result2.verdict + ' - Combined Score: ' + result2.combined + '/100';
+          outputEl.textContent = result2.details;
+
+          renderMultiLayerResults([{
+            icon: 'SPEC', name: 'Spectral Consistency', desc: 'Energy variance across frequency bands', score: result2.spectralScore
+          }
+
+            ,
+          {
+            icon: 'PITCH', name: 'Pitch Stability Analysis', desc: 'Zero-crossing rate variance and F0 stability', score: result2.pitchScore
+          }
+
+            ,
+          {
+            icon: 'BREATH', name: 'Breathing Pattern Detection', desc: 'Natural pause and breath signature', score: result2.breathScore
+          }
+
+            ,
+          {
+            icon: 'TREMOR', name: 'Micro-Tremor Jitter', desc: 'Peak amplitude jitter between micro-frames', score: result2.tremorScore
+          }
+
+            ,
+          {
+            icon: 'FINAL', name: 'Combined Neural Verdict', desc: 'Weighted multi-signal voice clone probability', score: result2.combined
+          }
+
+          ]);
+        }
+
+        catch (err) {
+          hideL(); statusEl.className = 'danger'; statusEl.textContent = 'ERROR: ' + err.message; console.error(err);
+        }
+      });
+
+      // ALSO keep old scanBtn handler for backward compat if someone uses scanBtn in forensic mode
+      var origScanBtn = document.getElementById('scanBtn');
+
+      origScanBtn.addEventListener('click', async function (e) {
+        var mode = scanTypeEl.value;
+
+        if (mode === 'deepfake') {
+          e.stopImmediatePropagation(); e.preventDefault(); dfScanBtn.click();
+        }
+
+        else if (mode === 'voiceclone') {
+          e.stopImmediatePropagation(); e.preventDefault(); vcScanBtn.click();
+        }
+      }
+
+        , true);
+
+      // Observe status changes for normal scans to add multi-layer display
+      var observer = new MutationObserver(function () {
+        var mode = scanTypeEl.value;
+        if (mode === 'deepfake' || mode === 'voiceclone') return;
+        var txt = statusEl.textContent;
+
+        if (txt.includes('Threat Score:')) {
+          var m = txt.match(/Threat Score:\s*(\d+)/);
+
+          if (m) {
+            var sc = parseInt(m[1]);
+
+            renderMultiLayerResults(buildMultiLayerFromScan({
+
+              score: sc, isWhitelisted: txt.includes('Whitelisted'),
+              safeBrowsingResult: {
+                isThreat: txt.includes('Threat Found'), checked: true
+              }
+
+              ,
+              isShortener: txt.includes('SHORTENER'), domain: ''
+            }));
+          }
+        }
+      });
+
+      observer.observe(statusEl, {
+        childList: true, characterData: true, subtree: true
+      });
+
+      // Initialize mode on load
+      switchMode(scanTypeEl.value);
+    })();
+
+    // Chat Logic
+    // REMOVED: Legacy Emergency Agent chat logic.
+    // Interactive chat is now handled by ztas-ai-widget.js (SAFY).
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var pack = 0, thrt = 0;
+      var packetsEl = document.getElementById('packetsSeen');
+      var threatsEl = document.getElementById('threatsFound');
+
+      // Only run the counter if the stat elements exist in the page
+      if (packetsEl || threatsEl) {
+        setInterval(function () {
+          pack += Math.floor(Math.random() * 100);
+          if (packetsEl) packetsEl.textContent = pack.toLocaleString();
+
+          if (Math.random() > 0.9) {
+            thrt++;
+            if (threatsEl) threatsEl.textContent = thrt;
+          }
+        }, 2000);
+      }
+    });
+  </script>
+</body>
+
+</html>
